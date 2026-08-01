@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول — هندسة أنظمة الحاسوب</title>
+    <meta name="description" content="تسجيل الدخول أو إنشاء حساب في موقع هندسة أنظمة الحاسوب — كلية فلسطين التقنية.">
+    <meta name="theme-color" content="#3c4a2f">
+    <link rel="icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="هندسة أنظمة الحاسوب — كلية فلسطين التقنية">
+    <meta property="og:title" content="تسجيل الدخول — هندسة أنظمة الحاسوب">
+    <meta property="og:description" content="تسجيل الدخول أو إنشاء حساب في موقع هندسة أنظمة الحاسوب — كلية فلسطين التقنية.">
+    <meta property="og:image" content="https://ptc-cse1.vercel.app/og-image.png">
+    <meta property="og:url" content="https://ptc-cse1.vercel.app/login.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تسجيل الدخول — هندسة أنظمة الحاسوب">
+    <meta name="twitter:description" content="تسجيل الدخول أو إنشاء حساب في موقع هندسة أنظمة الحاسوب — كلية فلسطين التقنية.">
+    <meta name="twitter:image" content="https://ptc-cse1.vercel.app/og-image.png">
+
+    <script>try { if (localStorage.getItem("ptc_theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) { }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-wrap {
+            max-width: 460px;
+            margin: 40px auto 60px
+        }
+
+        .auth-card {
+            background: var(--card);
+            border: 1px solid var(--line-2);
+            border-radius: 20px;
+            padding: 32px 30px;
+            box-shadow: var(--shadow-lg)
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--paper-2);
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 24px
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 11px;
+            border-radius: 9px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: var(--font-ar);
+            font-weight: 700;
+            font-size: 14.5px;
+            color: var(--muted);
+            transition: .2s
+        }
+
+            .auth-tab.active {
+                background: var(--card);
+                color: var(--olive);
+                box-shadow: var(--shadow)
+            }
+
+        .fld {
+            margin-bottom: 14px
+        }
+
+            .fld label {
+                display: block;
+                font-family: var(--font-ar);
+                font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 6px
+            }
+
+            .fld input, .fld select {
+                width: 100%;
+                padding: 12px 14px;
+                border-radius: 10px;
+                border: 1px solid var(--line-2);
+                background: var(--paper);
+                color: var(--ink);
+                font-family: var(--font-ar);
+                font-size: 14.5px;
+                outline: none;
+                transition: .2s
+            }
+
+                .fld input:focus, .fld select:focus {
+                    border-color: var(--copper);
+                    box-shadow: 0 0 0 3px rgba(176,106,53,.1)
+                }
+
+            .fld .hint {
+                font-family: var(--font-ar);
+                font-size: 11.5px;
+                color: var(--faint);
+                margin-top: 4px
+            }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: var(--olive);
+            color: var(--paper);
+            font-family: var(--font-ar);
+            font-weight: 700;
+            font-size: 15.5px;
+            cursor: pointer;
+            transition: .2s;
+            margin-top: 6px
+        }
+
+            .auth-btn:hover {
+                background: var(--olive-2)
+            }
+
+            .auth-btn:disabled {
+                opacity: .6;
+                cursor: default
+            }
+
+        .auth-msg {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-family: var(--font-ar);
+            font-size: 13.5px;
+            display: none
+        }
+
+            .auth-msg.show {
+                display: block
+            }
+
+            .auth-msg.err {
+                background: rgba(192,57,43,.12);
+                color: #c0392b;
+                border: 1px solid rgba(192,57,43,.3)
+            }
+
+            .auth-msg.ok {
+                background: rgba(143,174,120,.15);
+                color: var(--olive);
+                border: 1px solid var(--olive-2)
+            }
+
+        .auth-alt {
+            text-align: center;
+            margin-top: 16px;
+            font-family: var(--font-ar);
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+            .auth-alt a {
+                color: var(--copper);
+                cursor: pointer
+            }
+
+        .setup-note {
+            background: rgba(201,154,74,.12);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-family: var(--font-ar);
+            font-size: 13px;
+            color: var(--ink);
+            line-height: 1.9
+        }
+
+            .setup-note b {
+                color: var(--copper)
+            }
+
+            .setup-note code {
+                font-family: var(--font-mono);
+                font-size: 11.5px;
+                background: var(--paper-2);
+                padding: 2px 6px;
+                border-radius: 5px
+            }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">تخطَّ إلى المحتوى الرئيسي</a>
+
+
+    <div class="college-bar">
+        <div class="inner">
+            <span>كلية فلسطين التقنية — هندسة أنظمة الحاسوب</span>
+            <span class="en">Palestine Technical College · Computer Systems Engineering</span>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="brand" aria-label="هندسة أنظمة الحاسوب">
+                <span class="seal"><img src="logo.png" alt="شعار كلية فلسطين التقنية"></span>
+                <span class="txt"><b>هندسة أنظمة الحاسوب</b><small>Computer Systems Eng</small></span>
+            </div>
+            <div class="nav-links" id="menu">
+                <a href="index.html"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /><path d="M9 21v-6h6v6" /></svg></span>الرئيسية</a>
+                <a href="study-tools.html"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 2 3.5 3.2 3.5 5 0 1.4-1.4 2.3-3.5 2.3S8.5 8.4 8.5 7c0-1.8 1.5-3 3.5-5z" /><path d="M4 21v-6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6" /><path d="M4 21h16" /><path d="M9 21v-3a3 3 0 0 1 6 0v3" /></svg></span>رِحاب العِلم</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-btn" onclick="toggleTheme()" aria-label="تبديل الوضع" title="نهاري / ليلي">
+                    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+                </button>
+                <button class="burger" onclick="toggleNav()" aria-label="menu"><i data-icon="menu"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+        <section>
+            <div class="wrap auth-wrap">
+
+                <div class="auth-card">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" id="tabLogin" onclick="showTab('login')">تسجيل الدخول</button>
+                        <button class="auth-tab" id="tabSignup" onclick="showTab('signup')">حساب جديد</button>
+                    </div>
+
+                    <!-- LOGIN -->
+                    <form id="formLogin" onsubmit="doLogin(event)">
+                        <div class="fld">
+                            <label>البريد الإلكتروني</label>
+                            <input type="email" id="liEmail" required placeholder="example@gmail.com" autocomplete="email">
+                        </div>
+                        <div class="fld">
+                            <label>كلمة السر</label>
+                            <input type="password" id="liPass" required placeholder="••••••••" autocomplete="current-password">
+                        </div>
+                        <button class="auth-btn" type="submit" id="liBtn">دخول</button>
+                        <div class="auth-alt"><a href="forgot-password.html">نسيت كلمة السر؟</a></div>
+                    </form>
+
+                    <!-- SIGNUP -->
+                    <form id="formSignup" style="display:none" onsubmit="doSignup(event)">
+                        <div class="fld">
+                            <label>الاسم الكامل</label>
+                            <input type="text" id="suName" required placeholder="مثال: خالد عبد الكريم هنية">
+                        </div>
+                        <div class="fld">
+                            <label>الرقم الجامعي</label>
+                            <input type="text" id="suSid" required placeholder="مثال: 220123456" inputmode="numeric">
+                        </div>
+                        <div class="fld">
+                            <label>السنة الدراسية الحالية</label>
+                            <select id="suYear" required>
+                                <option value="">— اختر السنة —</option>
+                                <option value="1">السنة الأولى</option>
+                                <option value="2">السنة الثانية</option>
+                                <option value="3">السنة الثالثة</option>
+                                <option value="4">السنة الرابعة</option>
+                            </select>
+                        </div>
+                        <div class="fld">
+                            <label>البريد الإلكتروني (جيميل)</label>
+                            <input type="email" id="suEmail" required placeholder="example@gmail.com" autocomplete="email">
+                        </div>
+                        <div class="fld">
+                            <label>كلمة السر</label>
+                            <input type="password" id="suPass" required minlength="8" placeholder="٨ أحرف على الأقل" autocomplete="new-password">
+                            <div class="hint">اختر كلمة سر تحفظها — ستستخدمها للدخول من أي جهاز.</div>
+                        </div>
+                        <button class="auth-btn" type="submit" id="suBtn">إنشاء الحساب</button>
+                    </form>
+
+                    <div class="auth-msg" id="authMsg"></div>
+                </div>
+
+                <div class="auth-alt" style="margin-top:18px">
+                    بتسجيلك ستُحفظ مساقاتك وتقدّمك في حسابك، وتصل إليها من أي جهاز.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap foot-inner">
+            <div class="foot-col foot-college"><b>كلية فلسطين التقنية</b> — هندسة أنظمة الحاسوب</div>
+            <div class="foot-col foot-quote">مِنْ طَلَبَةِ الكُلِّيَّةِ لِطَلَبَتِهَا</div>
+            <div class="foot-col foot-by">تصميم وتطوير: <i data-icon="user"></i> م. خالد عبد الكريم هنية &nbsp;•&nbsp; <i data-icon="user"></i> م. إسراء يوسف الشنتف &nbsp;•&nbsp; م. ياسين هاني اعميرات <a href="https://www.linkedin.com/in/yasen-hani-50021b389" target="_blank" rel="noopener" style="color:var(--copper);text-decoration:none;vertical-align:middle" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:2px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a> (تطوير الموقع باكند وفرنت إند)</div>
+        </div>
+    </footer>
+
+    <script src="api-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="icons.js"></script>
+    <script src="app.js"></script>
+    <script>
+        function showTab(which) {
+            const login = which === 'login';
+            document.getElementById('tabLogin').classList.toggle('active', login);
+            document.getElementById('tabSignup').classList.toggle('active', !login);
+            document.getElementById('formLogin').style.display = login ? 'block' : 'none';
+            document.getElementById('formSignup').style.display = login ? 'none' : 'block';
+            msg('');
+        }
+        function msg(text, kind) {
+            const m = document.getElementById('authMsg');
+            if (!text) { m.classList.remove('show'); return; }
+            m.textContent = text; m.className = 'auth-msg show ' + (kind || 'err');
+        }
+        function niceError(e) {
+            const s = (e && e.message || '').toLowerCase();
+            if (s.includes('invalid login')) return 'البريد أو كلمة السر غير صحيحة.';
+            if (s.includes('already registered') || s.includes('already been')) return 'هذا البريد مسجّل مسبقاً — جرّب تسجيل الدخول.';
+            if (s.includes('password')) return 'كلمة السر قصيرة — استخدم ٨ أحرف فأكثر.';
+            if (s.includes('email')) return 'تأكد من صحة البريد الإلكتروني.';
+            return e && e.message ? e.message : 'حدث خطأ، حاول مرة أخرى.';
+        }
+
+        async function doSignup(e) {
+            e.preventDefault();
+            const btn = document.getElementById('suBtn');
+            // قراءة القيم
+            const name = document.getElementById('suName').value.trim();
+            const sid = document.getElementById('suSid').value.trim();
+            const year = document.getElementById('suYear').value;
+            const email = document.getElementById('suEmail').value.trim();
+            const pass = document.getElementById('suPass').value;
+            // تحقّق: كل الخانات مطلوبة
+            if (!name)  { msg('الرجاء إدخال الاسم الكامل.'); return; }
+            if (!sid)   { msg('الرجاء إدخال الرقم الجامعي.'); return; }
+            if (!/^\d{6,12}$/.test(sid)) { msg('الرقم الجامعي يجب أن يكون أرقاماً فقط (6 خانات على الأقل).'); return; }
+            if (!year)  { msg('الرجاء اختيار السنة الدراسية.'); return; }
+            if (!email) { msg('الرجاء إدخال البريد الإلكتروني.'); return; }
+            if (!pass)  { msg('الرجاء إدخال كلمة السر.'); return; }
+            if (pass.length < 8) { msg('كلمة السر يجب أن تكون 8 أحرف على الأقل.'); return; }
+            btn.disabled = true; msg('');
+            try {
+                await PTCAuth.signUp({
+                    email: email, password: pass, fullName: name,
+                    studentId: sid, year: year
+                });
+                if (PTCAuth.user) {
+                    const r = await PTCAuth.migrateLocalToCloud();
+                    msg(r.skipped
+                        ? 'تم إنشاء حسابك بنجاح!'
+                        : `تم إنشاء حسابك بنجاح! نُقلت ${r.courses} مساقات و${r.progress} سجلات تقدّم إلى حسابك.`, 'ok');
+                    setTimeout(() => location.href = 'index.html', 1600);
+                } else {
+                    msg('تم إنشاء الحساب! تفقّد بريدك لتأكيد التسجيل ثم سجّل الدخول.', 'ok');
+                    setTimeout(() => showTab('login'), 2200);
+                }
+            } catch (err) { msg(niceError(err)); }
+            btn.disabled = false;
+        }
+
+        async function doLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('liBtn'); btn.disabled = true; msg('');
+            try {
+                await PTCAuth.signIn({
+                    email: document.getElementById('liEmail').value.trim(),
+                    password: document.getElementById('liPass').value
+                });
+                let extra = '';
+                try {
+                    // migrateLocalToCloud صارت تفحص علم ptc_migrated بنفسها
+                    // وتكتبه بعد النجاح — فما بتشتغل أكثر من مرة
+                    const r = await PTCAuth.migrateLocalToCloud();
+                    if (!r.skipped && (r.courses || r.progress))
+                        extra = ` (نُقلت ${r.courses} مساقات و${r.progress} سجلات)`;
+                } catch (_) { }
+                msg('تم الدخول بنجاح' + extra + '... جارٍ التحويل', 'ok');
+                setTimeout(() => location.href = 'index.html', 1100);
+            } catch (err) { msg(niceError(err)); }
+            btn.disabled = false;
+        }
+
+        // نسيت كلمة السر → صفحة مخصّصة (forgot-password.html)
+        // إن كان مسجّلاً بالفعل
+        window.addEventListener('ptc-auth-change', () => {
+            if (PTCAuth.user) {
+                msg('أنت مسجّل الدخول بالفعل. جارٍ تحويلك...', 'ok');
+                setTimeout(() => location.href = 'index.html', 900);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رِحاب العِلم — هندسة أنظمة الحاسوب</title>
+    <meta name="description" content="رِحاب العِلم — أدوات الطالب: خطط المراجعة قبل كل مادة، رحلة الطالب الذكية، روابط مفيدة، ومزامنة بين الأجهزة.">
+    <meta name="theme-color" content="#3c4a2f">
+    <link rel="icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="هندسة أنظمة الحاسوب — كلية فلسطين التقنية">
+    <meta property="og:title" content="رِحاب العِلم — هندسة أنظمة الحاسوب">
+    <meta property="og:description" content="رِحاب العِلم — أدوات الطالب: خطط المراجعة قبل كل مادة، رحلة الطالب الذكية، روابط مفيدة، ومزامنة بين الأجهزة.">
+    <meta property="og:image" content="https://ptc-cse1.vercel.app/og-image.png">
+    <meta property="og:url" content="https://ptc-cse1.vercel.app/study-tools.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="رِحاب العِلم — هندسة أنظمة الحاسوب">
+    <meta name="twitter:description" content="رِحاب العِلم — أدوات الطالب: خطط المراجعة قبل كل مادة، رحلة الطالب الذكية، روابط مفيدة، ومزامنة بين الأجهزة.">
+    <meta name="twitter:image" content="https://ptc-cse1.vercel.app/og-image.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+            gap: 18px
+        }
+
+        .journey-banner {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 22px 26px;
+            border-radius: var(--radius);
+            margin-bottom: 18px;
+            background: linear-gradient(120deg,var(--olive),var(--olive-2));
+            color: var(--paper);
+            box-shadow: var(--shadow-lg);
+            transition: .25s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line-2)
+        }
+
+            .journey-banner:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 16px 44px rgba(60,74,47,.3)
+            }
+
+            .journey-banner .jb-ic {
+                width: 56px;
+                height: 56px;
+                border-radius: 14px;
+                background: rgba(255,255,255,.15);
+                display: grid;
+                place-items: center;
+                font-size: 28px;
+                flex-shrink: 0
+            }
+
+            .journey-banner .jb-txt {
+                flex: 1;
+                min-width: 0
+            }
+
+            .journey-banner .jb-title {
+                font-family: var(--font-display);
+                font-size: 22px;
+                font-weight: 700;
+                color: #fff
+            }
+
+            .journey-banner .jb-sub {
+                font-family: var(--font-ar);
+                font-size: 13.5px;
+                color: rgba(255,255,255,.85);
+                margin-top: 3px
+            }
+
+            .journey-banner .jb-arrow {
+                font-size: 26px;
+                color: var(--copper-soft);
+                transition: .2s;
+                flex-shrink: 0
+            }
+
+            .journey-banner:hover .jb-arrow {
+                transform: translateX(-6px);
+                color: #fff
+            }
+
+        [data-theme="dark"] .journey-banner {
+            background: linear-gradient(120deg,#2f3a25,#3c4a2f)
+        }
+
+            [data-theme="dark"] .journey-banner .jb-title {
+                color: var(--olive-2)
+            }
+
+        .prep-search-wrap {
+            position: relative;
+            margin-bottom: 8px
+        }
+
+        .prep-search {
+            width: 100%;
+            padding: 10px 34px 10px 12px;
+            border-radius: 9px;
+            background: var(--paper);
+            border: 1px solid var(--line-2);
+            color: var(--ink);
+            font-family: var(--font-ar);
+            font-size: 14px;
+            outline: none;
+            transition: .2s
+        }
+
+            .prep-search:focus {
+                border-color: var(--copper);
+                box-shadow: 0 0 0 3px rgba(176,106,53,.1)
+            }
+
+        .prep-clear {
+            position: absolute;
+            inset-block-start: 19px;
+            inset-inline-start: 8px;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: none;
+            background: var(--paper-2);
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            place-items: center;
+            transition: .15s
+        }
+
+            .prep-clear:hover {
+                background: var(--line);
+                color: var(--ink)
+            }
+
+            .prep-clear.show {
+                display: grid
+            }
+
+        .prep-options {
+            position: absolute;
+            inset-inline: 0;
+            inset-block-start: calc(100% + 4px);
+            z-index: 30;
+            background: var(--card);
+            border: 1px solid var(--line-2);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            max-height: 280px;
+            overflow-y: auto;
+            display: none
+        }
+
+            .prep-options.show {
+                display: block;
+                animation: fadeUp .2s ease
+            }
+
+        .prep-opt {
+            width: 100%;
+            text-align: start;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--line);
+            cursor: pointer;
+            transition: .15s
+        }
+
+            .prep-opt:last-child {
+                border-bottom: none
+            }
+
+            .prep-opt:hover {
+                background: var(--paper-2)
+            }
+
+            .prep-opt .po-name {
+                font-family: var(--font-ar);
+                font-size: 13.5px;
+                color: var(--ink)
+            }
+
+            .prep-opt:hover .po-name {
+                color: var(--copper)
+            }
+
+            .prep-opt code {
+                font-family: var(--font-mono);
+                font-size: 10px;
+                color: var(--faint);
+                white-space: nowrap
+            }
+
+        .prep-opt-empty {
+            padding: 14px;
+            text-align: center;
+            font-family: var(--font-ar);
+            color: var(--faint);
+            font-size: 13.5px
+        }
+
+        .sync-box {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px 12px;
+            border-radius: 9px;
+            background: var(--paper);
+            border: 1px solid var(--line-2);
+            color: var(--ink);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            outline: none;
+            resize: vertical;
+            word-break: break-all
+        }
+
+            .sync-box:focus {
+                border-color: var(--copper)
+            }
+
+        .sync-msg {
+            font-family: var(--font-ar);
+            font-size: 12.5px;
+            margin-top: 8px;
+            text-align: center;
+            min-height: 18px
+        }
+
+        .tool {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 26px;
+            box-shadow: var(--shadow)
+        }
+
+            .tool h3 {
+                font-family: var(--font-display);
+                font-size: 19px;
+                color: var(--olive);
+                margin-bottom: 3px
+            }
+
+            .tool .sub {
+                font-family: var(--font-ar);
+                color: var(--muted);
+                font-size: 14px;
+                margin-bottom: 18px
+            }
+
+        .timer {
+            font-family: var(--font-mono);
+            font-size: 54px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--copper);
+            letter-spacing: 2px;
+            margin: 8px 0
+        }
+
+        .timer-btns {
+            display: flex;
+            gap: 9px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .mini-btn {
+            padding: 9px 15px;
+            border-radius: 9px;
+            border: 1px solid var(--line-2);
+            background: var(--paper);
+            color: var(--ink);
+            cursor: pointer;
+            font-family: var(--font-ar);
+            font-size: 14px;
+            transition: .2s
+        }
+
+            .mini-btn:hover {
+                border-color: var(--copper)
+            }
+
+            .mini-btn.on {
+                background: var(--olive);
+                color: var(--paper);
+                border-color: var(--olive)
+            }
+
+        .prayer-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 11px 2px;
+            border-bottom: 1px solid var(--line);
+            font-family: var(--font-ar)
+        }
+
+            .prayer-row:last-child {
+                border: none
+            }
+
+            .prayer-row .t {
+                font-family: var(--font-mono);
+                color: var(--olive-2)
+            }
+
+            .prayer-row.next {
+                color: var(--copper);
+                font-weight: 700
+            }
+
+        .gpa-in {
+            width: 100%;
+            padding: 11px 13px;
+            border-radius: 9px;
+            background: var(--paper);
+            border: 1px solid var(--line-2);
+            color: var(--ink);
+            margin-bottom: 9px;
+            font-family: var(--font-body);
+            outline: none
+        }
+
+        .gpa-out {
+            font-family: var(--font-display);
+            font-size: 38px;
+            font-weight: 600;
+            color: var(--olive);
+            text-align: center;
+            margin-top: 6px
+        }
+
+        .links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 13px;
+            border-radius: 9px;
+            color: var(--muted);
+            transition: .2s;
+            border: 1px solid transparent;
+            font-family: var(--font-ar)
+        }
+
+            .links a:hover {
+                background: var(--paper-2);
+                color: var(--ink);
+                border-color: var(--line)
+            }
+
+        .prep-select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--paper);
+            border: 1px solid var(--line-2);
+            color: var(--ink);
+            font-family: var(--font-ar);
+            font-size: 15px;
+            outline: none;
+            transition: .2s;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23b06a35' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 14px center
+        }
+
+            .prep-select:focus {
+                border-color: var(--copper);
+                box-shadow: 0 0 0 3px rgba(176,106,53,.1)
+            }
+
+        .prep-result {
+            margin-top: 16px
+        }
+
+        .prep-empty {
+            font-family: var(--font-ar);
+            color: var(--faint);
+            font-size: 14px;
+            text-align: center;
+            padding: 16px 8px
+        }
+
+        .prep-head {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--olive);
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+            .prep-head .pcode {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                color: var(--paper);
+                background: var(--copper);
+                border-radius: 6px;
+                padding: 3px 8px
+            }
+
+        .prep-ar {
+            font-family: var(--font-ar);
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 12px
+        }
+
+        .prep-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+            .prep-list li {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border-radius: 9px;
+                background: var(--paper);
+                border: 1px solid var(--line);
+                font-family: var(--font-body);
+                font-size: 14px;
+                color: var(--ink);
+                transition: .18s;
+                animation: prepIn .35s cubic-bezier(.2,.8,.3,1) both;
+            }
+
+                .prep-list li:hover {
+                    border-color: var(--copper);
+                    transform: translateX(-3px)
+                }
+
+                .prep-list li .pnum {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 6px;
+                    display: grid;
+                    place-items: center;
+                    background: rgba(60,74,47,.1);
+                    color: var(--olive);
+                    font-family: var(--font-mono);
+                    font-size: 11px;
+                    font-weight: 700;
+                    flex-shrink: 0
+                }
+
+                .prep-list li:nth-child(1) {
+                    animation-delay: .03s
+                }
+
+                .prep-list li:nth-child(2) {
+                    animation-delay: .07s
+                }
+
+                .prep-list li:nth-child(3) {
+                    animation-delay: .11s
+                }
+
+                .prep-list li:nth-child(4) {
+                    animation-delay: .15s
+                }
+
+                .prep-list li:nth-child(5) {
+                    animation-delay: .19s
+                }
+
+                .prep-list li:nth-child(6) {
+                    animation-delay: .23s
+                }
+
+        @keyframes prepIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+    </style>
+    <script>try { if (localStorage.getItem("ptc_theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) { }</script>
+</head>
+<body>
+    <a href="#main" class="skip-link">تخطَّ إلى المحتوى الرئيسي</a>
+
+
+    <div class="college-bar">
+        <div class="inner">
+            <span>كلية فلسطين التقنية — هندسة أنظمة الحاسوب</span>
+            <span class="en">Palestine Technical College · Computer Systems Engineering</span>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="brand" aria-label="هندسة أنظمة الحاسوب"><span class="seal"><img src="logo.png" alt="شعار كلية فلسطين التقنية"></span><span class="txt"><b>هندسة أنظمة الحاسوب</b><small>Computer Systems Eng</small></span></div>
+            <div class="nav-links" id="menu">
+                <a href="index.html" data-nav="home"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /><path d="M9 21v-6h6v6" /></svg></span>الرئيسية</a>
+                <div class="nav-drop" data-nav="curriculum">
+                    <button class="nav-drop-btn" type="button"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5z" /><path d="M3 13l9 5 9-5" /></svg></span>المناهج الدراسية <svg class="dd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg></button>
+                    <div class="nav-drop-menu">
+                        <div class="dd-year">
+                            <a href="year1.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الأولى</a>
+                            <div class="dd-sems">
+                                <a href="year1.html#sem0">الفصل الأول</a>
+                                <a href="year1.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <div class="dd-year">
+                            <a href="year2.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الثانية</a>
+                            <div class="dd-sems">
+                                <a href="year2.html#sem0">الفصل الأول</a>
+                                <a href="year2.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <div class="dd-year">
+                            <a href="year3.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الثالثة</a>
+                            <div class="dd-sems">
+                                <a href="year3.html#sem0">الفصل الأول</a>
+                                <a href="year3.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <div class="dd-year">
+                            <a href="year4.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الرابعة</a>
+                            <div class="dd-sems">
+                                <a href="year4.html#sem0">الفصل الأول</a>
+                                <a href="year4.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <a href="electives.html" class="dd-elective"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.5" /></svg></span>المساقات الاختيارية</a>
+                    </div>
+                </div>
+                <a href="study-tools.html" data-nav="rihab" class="active"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 2 3.5 3.2 3.5 5 0 1.4-1.4 2.3-3.5 2.3S8.5 8.4 8.5 7c0-1.8 1.5-3 3.5-5z" /><path d="M4 21v-6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6" /><path d="M4 21h16" /><path d="M9 21v-3a3 3 0 0 1 6 0v3" /></svg></span>رِحاب العِلم</a>
+            </div>
+            <div class="auth-slot" id="authSlot">
+                <a class="auth-link" href="login.html" title="تسجيل الدخول"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a7 7 0 0 1 14 0v1" /></svg></span><span class="auth-label">دخول</span></a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-btn" onclick="toggleTheme()" aria-label="تبديل الوضع" title="نهاري / ليلي">
+                    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+                </button>
+                <button class="burger" onclick="toggleNav()" aria-label="menu"><i data-icon="menu"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+        <header class="page-head">
+            <div class="wrap">
+                <div class="crumb"><a href="index.html"><i data-icon="home"></i> الرئيسية</a> / أدوات الدراسة</div>
+                <h1>رِحاب العِلم <span class="em"><i data-icon="mosque"></i></span></h1>
+                <p>لأن النجاح لا يُبنى بالعشوائية، بل بالوعي والتنظيم؛ وفّرنا لك أدوات تجمع بين إدارة الوقت، تطوير الذات، وتعزيز الصلة بالله. خطّط يومك، راجع دروسك بذكاء، حافظ على عبادتك، وتابع مسيرتك الأكاديمية بخطوات واضحة نحو الإنجاز والتميّز.</p>
+            </div>
+        </header>
+
+        <section style="padding-top:8px">
+            <div class="wrap">
+                <div class="verse reveal" style="margin-bottom:22px;margin-top:0">
+                    <div class="kind" id="kind">آية</div>
+                    <div class="ayah" id="ayah">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</div>
+                    <div class="surah" id="surah">طه: 114</div>
+                </div>
+
+                <a href="journey.html" class="journey-banner reveal">
+                    <div class="jb-ic"><i data-icon="graduation"></i></div>
+                    <div class="jb-txt">
+                        <div class="jb-title">رحلة الطالب الذكية</div>
+                        <div class="jb-sub">لوحة تحكّمك الشخصية: تابع تقدّمك، نظّم مهامك، ودوّن ملاحظاتك لكل مساق — اضغط للدخول</div>
+                    </div>
+                    <div class="jb-arrow"><i data-icon="arrowLeft"></i></div>
+                </a>
+
+                <div class="tools-grid">
+                    <div class="tool reveal">
+                        <h3><i data-icon="clipboard"></i> ماذا أراجع قبل المادة؟</h3><div class="sub">ابحث عن المساق لتعرف المواضيع التي يُنصح بمراجعتها قبله.</div>
+                        <div class="prep-search-wrap">
+                            <input class="prep-search" id="prepSearch" placeholder="ابحث عن مساق بالاسم أو الرمز..." oninput="filterPrep(this.value)" autocomplete="off">
+                            <button class="prep-clear" id="prepClear" onclick="prepClearSearch()" aria-label="مسح">×</button>
+                            <div class="prep-options" id="prepOptions"></div>
+                        </div>
+                        <div class="prep-result" id="prepResult">
+                            <div class="prep-empty">اكتب اسم مساق للبحث عن متطلبات مراجعته <i data-icon="bookOpen"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="tool reveal">
+                        <h3><i data-icon="link"></i> روابط مفيدة</h3><div class="sub">مصادر تعليمية خارجية.</div>
+                        <div class="links">
+                            <a href="https://www.geeksforgeeks.org" target="_blank" rel="noopener"><i data-icon="bookOpen"></i> GeeksforGeeks</a>
+                            <a href="https://leetcode.com" target="_blank" rel="noopener"><i data-icon="bookOpen"></i> LeetCode</a>
+                            <a href="https://www.w3schools.com" target="_blank" rel="noopener"><i data-icon="link"></i> W3Schools</a>
+                            <a href="https://cs50.harvard.edu" target="_blank" rel="noopener"><i data-icon="graduation"></i> Harvard CS50</a>
+                            <a href="https://roadmap.sh" target="_blank" rel="noopener"><i data-icon="target"></i> Developer Roadmaps</a>
+                        </div>
+                    </div>
+
+                    <a href="rawdah.html" class="tool reveal spiritual-card">
+                        <h3><i data-icon="leaf"></i> روضة الذاكرين</h3><div class="sub">واحتك الروحانية: أذكار الصباح والمساء، القرآن الكريم، أحاديث، مواعيد الصلاة، ومسبحة.</div>
+                        <div class="spiritual-preview">
+                            <span><i data-icon="sunrise"></i> أذكار الصباح</span><span><i data-icon="moon"></i> أذكار المساء</span><span><i data-icon="quran"></i> المصحف كامل</span>
+                            <span><i data-icon="quote"></i> أحاديث</span><span><i data-icon="mosque"></i> مواعيد الصلاة</span><span><i data-icon="beads"></i> المسبحة</span>
+                        </div>
+                        <div class="spiritual-enter">ادخل الروضة <i data-icon="arrowLeft"></i></div>
+                    </a>
+
+                    <div class="tool reveal">
+                        <h3><i data-icon="refresh"></i> مزامنة الأجهزة</h3><div class="sub">انقل تقدّمك وملاحظاتك بين حاسوبك وجوالك عبر كود.</div>
+                        <button class="mini-btn on" onclick="exportSync()" style="width:100%;margin-bottom:8px"><i data-icon="upload"></i> توليد كود النسخ الاحتياطي</button>
+                        <textarea id="syncBox" class="sync-box" placeholder="سيظهر الكود هنا... أو الصق كوداً من جهاز آخر ثم اضغط استيراد"></textarea>
+                        <button class="mini-btn" onclick="importSync()" style="width:100%;margin-top:8px"><i data-icon="download"></i> استيراد من كود</button>
+                        <div id="syncMsg" class="sync-msg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap foot-inner">
+            <div class="foot-col foot-college"><b>كلية فلسطين التقنية</b> — هندسة أنظمة الحاسوب</div>
+            <div class="foot-col foot-quote">مِنْ طَلَبَةِ الكُلِّيَّةِ لِطَلَبَتِهَا</div>
+            <div class="foot-col foot-by">تصميم وتطوير: <i data-icon="user"></i> م. خالد عبد الكريم هنية &nbsp;•&nbsp; <i data-icon="user"></i> م. إسراء يوسف الشنتف &nbsp;•&nbsp; م. ياسين هاني اعميرات <a href="https://www.linkedin.com/in/yasen-hani-50021b389" target="_blank" rel="noopener" style="color:var(--copper);text-decoration:none;vertical-align:middle" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:2px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a> (تطوير الموقع باكند وفرنت إند)</div>
+        </div>
+    </footer>
+
+    <script src="prep-guide.js"></script>
+    <script src="api-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="icons.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // live search for "ماذا أراجع قبل المادة؟"
+        function filterPrep(q) {
+            const clr = document.getElementById('prepClear');
+            if (clr) clr.classList.toggle('show', (q || '').length > 0);
+            const box = document.getElementById('prepOptions');
+            q = (q || '').trim().toLowerCase();
+            if (!q) { box.classList.remove('show'); box.innerHTML = ''; return; }
+            if (typeof PREP_GUIDE === 'undefined') { return; }
+            const matches = Object.keys(PREP_GUIDE).filter(code => {
+                const c = PREP_GUIDE[code];
+                return code.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.ar.includes(q);
+            }).slice(0, 10);
+            if (!matches.length) { box.innerHTML = '<div class="prep-opt-empty">لا يوجد مساق بهذا الاسم</div>'; box.classList.add('show'); return; }
+            box.innerHTML = matches.map(code => {
+                const c = PREP_GUIDE[code];
+                return `<button class="prep-opt" onclick="pickPrep('${code}')"><span class="po-name">${c.name} — ${c.ar}</span><code>${code}</code></button>`;
+            }).join('');
+            box.classList.add('show');
+        }
+        function pickPrep(code) {
+            document.getElementById('prepSearch').value = '';
+            document.getElementById('prepOptions').classList.remove('show');
+            document.getElementById('prepClear').classList.remove('show');
+            showPrep(code);
+        }
+        function prepClearSearch() {
+            const inp = document.getElementById('prepSearch');
+            inp.value = ''; filterPrep(''); inp.focus();
+            document.getElementById('prepResult').innerHTML = '<div class="prep-empty">اكتب اسم مساق للبحث عن متطلبات مراجعته <i data-icon="bookOpen"></i></div>';
+        }
+        document.addEventListener('click', e => { if (!e.target.closest('.prep-search-wrap')) document.getElementById('prepOptions').classList.remove('show'); });
+
+        // ===== device sync via copy/paste code =====
+        function collectData() {
+            const out = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && (k.startsWith('jr_') || k.startsWith('ptc_'))) { out[k] = localStorage.getItem(k); }
+            }
+            return out;
+        }
+        function exportSync() {
+            const data = collectData();
+            const keys = Object.keys(data).length;
+            if (!keys) { document.getElementById('syncMsg').textContent = 'لا توجد بيانات لتصديرها بعد.'; document.getElementById('syncMsg').style.color = 'var(--faint)'; return; }
+            const code = 'PTC1:' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+            const box = document.getElementById('syncBox');
+            box.value = code; box.select();
+            try { navigator.clipboard.writeText(code); } catch (e) { }
+            document.getElementById('syncMsg').textContent = `<i data-icon="check"></i> تم توليد الكود (${keys} عنصر) ونُسخ. الصقه في جهازك الآخر.`;
+            document.getElementById('syncMsg').style.color = 'var(--olive-2)';
+        }
+        function importSync() {
+            const raw = (document.getElementById('syncBox').value || '').trim();
+            const msg = document.getElementById('syncMsg');
+            if (!raw.startsWith('PTC1:')) { msg.textContent = 'الكود غير صالح. تأكد من نسخه كاملاً.'; msg.style.color = '#c0392b'; return; }
+            try {
+                const data = JSON.parse(decodeURIComponent(escape(atob(raw.slice(5)))));
+                let n = 0;
+                Object.keys(data).forEach(k => { localStorage.setItem(k, data[k]); n++; });
+                msg.textContent = `<i data-icon="check"></i> تم استيراد ${n} عنصر بنجاح! سيتم تحديث الصفحة...`;
+                msg.style.color = 'var(--olive-2)';
+                setTimeout(() => location.reload(), 1400);
+            } catch (e) { msg.textContent = 'تعذّر قراءة الكود. قد يكون تالفاً.'; msg.style.color = '#c0392b'; }
+        }
+        function showPrep(code) {
+            const box = document.getElementById('prepResult');
+            if (!code) { box.innerHTML = '<div class="prep-empty">اختر مساقاً من القائمة لعرض متطلبات مراجعته <i data-icon="bookOpen"></i></div>'; return; }
+            const c = PREP_GUIDE[code];
+            const items = c.topics.map((t, i) => {
+                const label = (typeof t === 'string') ? t : t.topic;
+                const link = (typeof t === 'object' && t.link) ? t.link : '';
+                const inner = link ? `<a href="${link}" target="_blank" rel="noopener" style="color:inherit">${label} ↗</a>` : label;
+                return `<li><span class="pnum">${i + 1}</span><span>${inner}</span></li>`;
+            }).join('');
+            box.innerHTML = `<div class="prep-head"><span class="pcode">${code}</span>${c.name}</div>
+        <div class="prep-ar">${c.ar} — يُنصح بمراجعة:</div>
+        <ul class="prep-list">${items}</ul>`;
+        }
+    </script>
+</body>
+</html>

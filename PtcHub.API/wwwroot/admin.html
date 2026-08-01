@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم — هندسة أنظمة الحاسوب</title>
+    <meta name="description" content="لوحة التحكم — إدارة ملفات المساقات والإعلانات والطلاب.">
+    <meta name="theme-color" content="#3c4a2f">
+    <link rel="icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="هندسة أنظمة الحاسوب — كلية فلسطين التقنية">
+    <meta property="og:title" content="لوحة التحكم — هندسة أنظمة الحاسوب">
+    <meta property="og:description" content="لوحة التحكم — إدارة ملفات المساقات والإعلانات والطلاب.">
+    <meta property="og:image" content="https://ptc-cse1.vercel.app/og-image.png">
+    <meta property="og:url" content="https://ptc-cse1.vercel.app/admin.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="لوحة التحكم — هندسة أنظمة الحاسوب">
+    <meta name="twitter:description" content="لوحة التحكم — إدارة ملفات المساقات والإعلانات والطلاب.">
+    <meta name="twitter:image" content="https://ptc-cse1.vercel.app/og-image.png">
+
+    <script>try { if (localStorage.getItem("ptc_theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) { }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 22px
+        }
+
+        .admin-tab {
+            padding: 11px 20px;
+            border-radius: 11px;
+            border: 1px solid var(--line-2);
+            background: var(--card);
+            color: var(--muted);
+            font-family: var(--font-ar);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: .2s
+        }
+
+            .admin-tab:hover {
+                border-color: var(--copper);
+                color: var(--olive)
+            }
+
+            .admin-tab.active {
+                background: var(--olive);
+                color: var(--paper);
+                border-color: var(--olive)
+            }
+
+        .apane {
+            display: none
+        }
+
+            .apane.show {
+                display: block;
+                animation: fadeUp .3s ease
+            }
+
+        .acard {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px
+        }
+
+            .acard h3 {
+                font-family: var(--font-display);
+                font-size: 17px;
+                color: var(--olive);
+                margin-bottom: 14px
+            }
+
+        .atable {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-ar);
+            font-size: 13.5px
+        }
+
+            .atable th {
+                text-align: start;
+                padding: 11px 12px;
+                background: var(--paper-2);
+                color: var(--olive);
+                font-weight: 700;
+                border-bottom: 1px solid var(--line-2);
+                white-space: nowrap
+            }
+
+            .atable td {
+                padding: 11px 12px;
+                border-bottom: 1px solid var(--line);
+                color: var(--ink)
+            }
+
+            .atable tr:hover td {
+                background: var(--paper-2)
+            }
+
+            .atable .role-badge {
+                font-family: var(--font-mono);
+                font-size: 10.5px;
+                padding: 3px 9px;
+                border-radius: 20px;
+                white-space: nowrap
+            }
+
+        .role-student {
+            background: rgba(143,174,120,.18);
+            color: var(--olive)
+        }
+
+        .role-supervisor {
+            background: rgba(201,154,74,.2);
+            color: var(--copper)
+        }
+
+        .role-admin {
+            background: var(--copper);
+            color: #fff
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .afld {
+            margin-bottom: 12px
+        }
+
+            .afld label {
+                display: block;
+                font-family: var(--font-ar);
+                font-size: 12.5px;
+                color: var(--muted);
+                margin-bottom: 5px
+            }
+
+            .afld input, .afld select, .afld textarea {
+                width: 100%;
+                padding: 11px 13px;
+                border-radius: 9px;
+                border: 1px solid var(--line-2);
+                background: var(--paper);
+                color: var(--ink);
+                font-family: var(--font-ar);
+                font-size: 14px;
+                outline: none
+            }
+
+                .afld input:focus, .afld select:focus, .afld textarea:focus {
+                    border-color: var(--copper)
+                }
+
+        .arow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        @media (max-width:640px) {
+            .arow {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .abtn {
+            padding: 11px 20px;
+            border-radius: 10px;
+            border: none;
+            background: var(--olive);
+            color: var(--paper);
+            font-family: var(--font-ar);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: .2s
+        }
+
+            .abtn:hover {
+                background: var(--olive-2)
+            }
+
+            .abtn.ghost {
+                background: none;
+                border: 1px solid var(--line-2);
+                color: var(--olive)
+            }
+
+            .abtn.danger {
+                background: none;
+                border: 1px solid rgba(192,57,43,.4);
+                color: #c0392b;
+                padding: 6px 12px;
+                font-size: 12.5px
+            }
+
+                .abtn.danger:hover {
+                    background: rgba(192,57,43,.1)
+                }
+
+        .astat {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+            gap: 12px;
+            margin-bottom: 20px
+        }
+
+        .astat-box {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: var(--shadow)
+        }
+
+            .astat-box .v {
+                font-family: var(--font-display);
+                font-size: 26px;
+                font-weight: 600;
+                color: var(--copper)
+            }
+
+            .astat-box .l {
+                font-family: var(--font-ar);
+                font-size: 12.5px;
+                color: var(--muted);
+                margin-top: 3px
+            }
+
+        .amsg {
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-family: var(--font-ar);
+            font-size: 13.5px;
+            margin-top: 12px;
+            display: none
+        }
+
+            .amsg.show {
+                display: block
+            }
+
+            .amsg.ok {
+                background: rgba(143,174,120,.15);
+                color: var(--olive);
+                border: 1px solid var(--olive-2)
+            }
+
+            .amsg.err {
+                background: rgba(192,57,43,.12);
+                color: #c0392b;
+                border: 1px solid rgba(192,57,43,.3)
+            }
+
+        .gate {
+            max-width: 480px;
+            margin: 60px auto;
+            text-align: center;
+            background: var(--card);
+            border: 1px solid var(--line-2);
+            border-radius: 18px;
+            padding: 36px 28px;
+            box-shadow: var(--shadow-lg)
+        }
+
+            .gate .g-ic {
+                font-size: 44px;
+                margin-bottom: 12px
+            }
+
+            .gate h2 {
+                font-family: var(--font-display);
+                color: var(--olive);
+                margin-bottom: 8px
+            }
+
+            .gate p {
+                font-family: var(--font-ar);
+                color: var(--muted);
+                font-size: 14px;
+                line-height: 1.9
+            }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">تخطَّ إلى المحتوى الرئيسي</a>
+
+
+    <div class="college-bar">
+        <div class="inner">
+            <span>كلية فلسطين التقنية — هندسة أنظمة الحاسوب</span>
+            <span class="en">Palestine Technical College · Computer Systems Engineering</span>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="brand" aria-label="هندسة أنظمة الحاسوب">
+                <span class="seal"><img src="logo.png" alt="شعار كلية فلسطين التقنية"></span>
+                <span class="txt"><b>هندسة أنظمة الحاسوب</b><small>Computer Systems Eng</small></span>
+            </div>
+            <div class="nav-links" id="menu">
+                <a href="index.html"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /><path d="M9 21v-6h6v6" /></svg></span>الرئيسية</a>
+                <a href="study-tools.html"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 2 3.5 3.2 3.5 5 0 1.4-1.4 2.3-3.5 2.3S8.5 8.4 8.5 7c0-1.8 1.5-3 3.5-5z" /><path d="M4 21v-6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6" /><path d="M4 21h16" /><path d="M9 21v-3a3 3 0 0 1 6 0v3" /></svg></span>رِحاب العِلم</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-btn" onclick="toggleTheme()" aria-label="تبديل الوضع" title="نهاري / ليلي">
+                    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+                </button>
+                <button class="burger" onclick="toggleNav()" aria-label="menu"><i data-icon="menu"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- gate: shown when not signed in / not staff -->
+    <div id="gate" class="gate" style="display:none">
+        <div class="g-ic"><i data-icon="lock"></i></div>
+        <h2 id="gateTitle">لوحة التحكم</h2>
+        <p id="gateText">هذه الصفحة مخصّصة للمشرفين. يُرجى تسجيل الدخول بحساب لديه صلاحية.</p>
+        <div style="margin-top:18px"><a class="abtn" href="login.html">تسجيل الدخول</a></div>
+    </div>
+
+    <div id="adminBody" style="display:none">
+        <main id="main">
+            <header class="page-head">
+                <div class="wrap">
+                    <div class="crumb"><a href="index.html">الرئيسية</a> / لوحة التحكم</div>
+                    <h1>لوحة التحكم <span class="em"><i data-icon="settings"></i></span></h1>
+                    <p id="whoami">مرحباً</p>
+                </div>
+            </header>
+
+            <section style="padding-top:14px">
+                <div class="wrap">
+                    <div class="astat" id="statBoxes"></div>
+
+                    <div class="admin-tabs">
+                        <button class="admin-tab active" onclick="aTab('files',this)"><i data-icon="paperclip"></i> ملفات المساقات</button>
+                        <button class="admin-tab" onclick="aTab('students',this)">👥 الطلاب</button>
+                        <button class="admin-tab" onclick="aTab('news',this)"><i data-icon="megaphone"></i> الإعلانات</button>
+                        <button class="admin-tab" onclick="aTab('reviews',this)">📋 طلبات الطلاب</button>
+                        <button class="admin-tab" id="tabRoles" onclick="aTab('roles',this)" style="display:none"><i data-icon="key"></i> الصلاحيات</button>
+                    </div>
+
+                    <!-- FILES -->
+                    <div class="apane show" id="pane-files">
+                        <div class="acard">
+                            <h3>إضافة ملف لمساق</h3>
+                            <div class="arow">
+                                <div class="afld"><label>المساق</label><select id="fCourse"></select></div>
+                                <div class="afld">
+                                    <label>نوع الملف</label>
+                                    <select id="fKind">
+                                        <option value="pdf">PDF — ملف</option>
+                                        <option value="doc">DOC — مستند</option>
+                                        <option value="vid">VID — فيديو</option>
+                                        <option value="zip">ZIP — مضغوط</option>
+                                        <option value="link">LINK — رابط</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="afld"><label>عنوان الملف</label><input id="fTitle" placeholder="مثال: محاضرة ١ — مقدمة"></div>
+                            <div class="arow">
+                                <div class="afld"><label>الرابط</label><input id="fUrl" placeholder="https://drive.google.com/..." dir="ltr"></div>
+                                <div class="afld"><label>الحجم (اختياري)</label><input id="fSize" placeholder="4.2 MB" dir="ltr"></div>
+                            </div>
+                            <button class="abtn" onclick="addFile()">+ إضافة الملف</button>
+                            <div class="amsg" id="fMsg"></div>
+                        </div>
+
+                        <div class="acard">
+                            <h3>الملفات المضافة</h3>
+                            <div class="afld"><label>تصفية حسب المساق</label><select id="fFilter" onchange="loadFiles()"></select></div>
+                            <div class="table-scroll">
+                                <table class="atable">
+                                    <thead><tr><th>المساق</th><th>العنوان</th><th>النوع</th><th>الرابط</th><th></th></tr></thead>
+                                    <tbody id="filesBody"><tr><td colspan="5">جارٍ التحميل...</td></tr></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STUDENTS -->
+                    <div class="apane" id="pane-students">
+                        <div class="acard">
+                            <h3>الطلاب المسجّلون</h3>
+
+                            <div class="afld" style="max-width:280px">
+                                <label>عرض حسب السنة</label>
+                                <select id="stYearFilter" onchange="renderStudents()">
+                                    <option value="">— كل السنوات —</option>
+                                    <option value="1">السنة الأولى</option>
+                                    <option value="2">السنة الثانية</option>
+                                    <option value="3">السنة الثالثة</option>
+                                    <option value="4">السنة الرابعة</option>
+                                    <option value="5">الخريجين</option>
+                                    <option value="none">بلا سنة محدّدة</option>
+                                </select>
+                            </div>
+
+                            <!-- شريط النقل الجماعي — الأدمن العام فقط -->
+                            <div id="bulkBar" style="display:none;background:var(--paper-2);
+                                 border:1px solid var(--line-2);border-radius:11px;
+                                 padding:14px 16px;margin-bottom:14px">
+                                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+                                    <span style="font-family:var(--font-ar);font-size:13.5px;color:var(--olive);font-weight:700">
+                                        <span id="selCount">0</span> طالب محدّد
+                                    </span>
+                                    <span style="font-family:var(--font-ar);font-size:13px;color:var(--muted)">انقلهم إلى:</span>
+                                    <select id="bulkYear" style="padding:9px 12px;border-radius:8px;
+                                        border:1px solid var(--line-2);background:var(--paper);
+                                        color:var(--ink);font-family:var(--font-ar);font-size:13.5px">
+                                        <option value="1">السنة الأولى</option>
+                                        <option value="2">السنة الثانية</option>
+                                        <option value="3">السنة الثالثة</option>
+                                        <option value="4">السنة الرابعة</option>
+                                        <option value="5">خرّيج</option>
+                                    </select>
+                                    <button class="abtn" onclick="bulkMove()">↗ نقل المحدّدين</button>
+                                    <button class="abtn ghost" onclick="clearSel()">إلغاء التحديد</button>
+                                </div>
+                                <div style="font-family:var(--font-ar);font-size:12px;color:var(--muted);margin-top:10px">
+                                    النقل بيحدّد السنة تحديداً (مش +1)، فلو ضغطت مرتين ما بيتغيّر إشي.
+                                </div>
+                                <div class="amsg" id="bMsg"></div>
+                            </div>
+
+                            <div class="table-scroll">
+                                <table class="atable">
+                                    <thead><tr>
+                                        <th id="selAllCell" style="display:none;width:36px">
+                                            <input type="checkbox" id="selAll" onclick="toggleAll(this)">
+                                        </th>
+                                        <th>الاسم</th><th>الرقم الجامعي</th><th>البريد</th>
+                                        <th>السنة</th><th>الصلاحية</th><th>تاريخ التسجيل</th><th>إجراءات</th>
+                                    </tr></thead>
+                                    <tbody id="studentsBody"><tr><td colspan="8">جارٍ التحميل...</td></tr></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEWS -->
+                    <div class="apane" id="pane-news">
+                        <div class="acard">
+                            <h3>إضافة إعلان</h3>
+                            <div class="afld"><label>العنوان</label><input id="nTitle" placeholder="مثال: موعد تسليم المشروع"></div>
+                            <div class="afld"><label>النص</label><textarea id="nBody" rows="3" placeholder="تفاصيل الإعلان..."></textarea></div>
+                            <div class="afld"><label>السنة المستهدفة</label>
+                              <select id="nYear">
+                                <option value="">عام — لكل الطلاب</option>
+                                <option value="1">السنة الأولى فقط</option>
+                                <option value="2">السنة الثانية فقط</option>
+                                <option value="3">السنة الثالثة فقط</option>
+                                <option value="4">السنة الرابعة فقط</option>
+                              </select>
+                            </div>
+                            <button class="abtn" onclick="addNews()">+ نشر الإعلان</button>
+                            <div class="amsg" id="nMsg"></div>
+                        </div>
+                        <div class="acard">
+                            <h3>الإعلانات الحالية</h3>
+                            <div id="newsList">جارٍ التحميل...</div>
+                        </div>
+                    </div>
+
+                    <!-- REVIEWS -->
+                    <div class="apane" id="pane-reviews">
+                        <div class="acard">
+                            <h3>ملفات بانتظار المراجعة</h3>
+                            <div id="reviewsEmpty" style="display:none;text-align:center;padding:24px;color:var(--muted);font-family:var(--font-ar)">
+                                ✅ ما في ملفات معلّقة حالياً
+                            </div>
+                            <div class="table-scroll">
+                                <table class="atable" id="reviewsTable" style="display:none">
+                                    <thead><tr><th>المساق</th><th>العنوان</th><th>الرابط</th><th>المُرسل</th><th>التاريخ</th><th>إجراء</th></tr></thead>
+                                    <tbody id="reviewsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROLES (admin only) -->
+                    <div class="apane" id="pane-roles">
+                        <div class="acard">
+                            <h3>تغيير صلاحية مستخدم</h3>
+                            <p style="font-family:var(--font-ar);font-size:13px;color:var(--muted);margin-bottom:14px">
+                                الآدمن العام: كل السنوات. أدمن/مشرف سنة: مسؤول كامل عن سنة واحدة فقط —
+                                بيشوف طلابها، وبينشر إعلاناتها، وبيضيف ملفات مساقاتها، وبس.
+                            </p>
+                            <div class="arow">
+                                <div class="afld"><label>بريد المستخدم</label><input id="rEmail" placeholder="user@gmail.com" dir="ltr"></div>
+                                <div class="afld">
+                                    <label>الصلاحية الجديدة</label>
+                                    <select id="rRole" onchange="roleChanged()">
+                                        <option value="student">طالب</option>
+                                        <option value="supervisor">مشرف</option>
+                                        <option value="admin">آدمن</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="afld" id="rScopeWrap" style="display:none">
+                                <label>السنة المسؤول عنها</label>
+                                <select id="rScope">
+                                    <option value="">كل السنوات — صلاحية عامة</option>
+                                    <option value="1">السنة الأولى فقط</option>
+                                    <option value="2">السنة الثانية فقط</option>
+                                    <option value="3">السنة الثالثة فقط</option>
+                                    <option value="4">السنة الرابعة فقط</option>
+                                </select>
+                                <div id="rScopeHint" style="font-family:var(--font-ar);font-size:12px;color:var(--muted);margin-top:6px"></div>
+                            </div>
+                            <button class="abtn" onclick="setRole()">حفظ الصلاحية</button>
+                            <div class="amsg" id="rMsg"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    </div>
+
+    </main>
+
+    <footer>
+        <div class="wrap foot-inner">
+            <div class="foot-col foot-college"><b>كلية فلسطين التقنية</b> — هندسة أنظمة الحاسوب</div>
+            <div class="foot-col foot-quote">مِنْ طَلَبَةِ الكُلِّيَّةِ لِطَلَبَتِهَا</div>
+            <div class="foot-col foot-by">تصميم وتطوير: <i data-icon="user"></i> م. خالد عبد الكريم هنية &nbsp;•&nbsp; <i data-icon="user"></i> م. إسراء يوسف الشنتف &nbsp;•&nbsp; م. ياسين هاني اعميرات <a href="https://www.linkedin.com/in/yasen-hani-50021b389" target="_blank" rel="noopener" style="color:var(--copper);text-decoration:none;vertical-align:middle" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:2px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a> (تطوير الموقع باكند وفرنت إند)</div>
+        </div>
+    </footer>
+
+    <script src="api-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="courses-index.js"></script>
+    <script src="icons.js"></script>
+    <script src="app.js"></script>
+    <script>
+        function aTab(name, btn) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.apane').forEach(p => p.classList.remove('show'));
+            document.getElementById('pane-' + name).classList.add('show');
+            if (name === 'students') loadStudents();
+            if (name === 'news') loadNews();
+        }
+        function say(id, text, kind) {
+            const m = document.getElementById(id);
+            m.textContent = text; m.className = 'amsg show ' + (kind || 'ok');
+            setTimeout(() => m.classList.remove('show'), 4000);
+        }
+
+        function applyGate() {
+            const gate = document.getElementById('gate'), body = document.getElementById('adminBody');
+            if (!PTCAuth.isReady) return;
+            if (!PTCAuth.user) { gate.style.display = 'block'; body.style.display = 'none'; return; }
+            if (!PTCAuth.isStaff()) {
+                gate.style.display = 'block'; body.style.display = 'none';
+                document.getElementById('gateTitle').textContent = 'لا تملك صلاحية';
+                document.getElementById('gateText').textContent = 'هذه الصفحة للمشرفين فقط. تواصل مع الآدمن لمنحك الصلاحية.';
+                return;
+            }
+            gate.style.display = 'none'; body.style.display = 'block';
+            const p = PTCAuth.profile;
+            const sc = PTCAuth.scopeYear;
+            document.getElementById('whoami').textContent =
+                'مرحباً ' + (p.full_name || '') + ' — صلاحيتك: ' + (p.role === 'admin' ? 'آدمن' : 'مشرف') +
+                (sc ? ' (' + yearLabel(sc) + ' فقط)' : ' عام (كل السنوات)');
+
+            // توزيع الصلاحيات للأدمن العام فقط — أدمن السنة ما بيرفّع حاله ولا غيره
+            const tabRoles = document.getElementById('tabRoles');
+            if (tabRoles && PTCAuth.isSuperAdmin()) tabRoles.style.display = '';
+
+            lockAnnouncementYear();
+            fillCourseSelects(); loadFiles(); loadStats(); loadStudents(); loadNews(); loadReviews();
+        }
+        window.addEventListener('ptc-auth-change', applyGate);
+        window.addEventListener('DOMContentLoaded', function () { setTimeout(applyGate, 600); });
+
+        // ===== أدوات النطاق =====
+        const YEAR_NAMES = ['', 'السنة الأولى', 'السنة الثانية', 'السنة الثالثة', 'السنة الرابعة'];
+        function yearLabel(y) { return YEAR_NAMES[Number(y)] || '—'; }
+
+        // سنة المساق مستخرجة من صفحته: year2.html → 2
+        function courseYear(c) {
+            const m = /year(\d)\.html/.exec(c.page || '');
+            return m ? Number(m[1]) : 0;
+        }
+
+        // المساقات اللي مسموح لهذا المسؤول يتعامل معها
+        function scopedCourses() {
+            if (typeof COURSE_INDEX === 'undefined') return [];
+            const sc = PTCAuth.scopeYear;
+            if (!sc) return COURSE_INDEX;                    // أدمن عام → الكل
+            return COURSE_INDEX.filter(function (c) { return courseYear(c) === sc; });
+        }
+
+        // هل هذا الكود ضمن نطاقي؟ (لفلترة جدول الملفات)
+        function codeInScope(code) {
+            const sc = PTCAuth.scopeYear;
+            if (!sc) return true;
+            return scopedCourses().some(function (c) { return c.code === code; });
+        }
+
+        function fillCourseSelects() {
+            const list = scopedCourses();
+            if (!list.length) return;
+            const opts = list.map(function (c) { return '<option value="' + escAttr(c.code) + '">' + esc(c.code) + ' — ' + esc(c.ar || '') + '</option>'; }).join('');
+            const fc = document.getElementById('fCourse'); if (fc) fc.innerHTML = opts;
+            const ff = document.getElementById('fFilter'); if (ff) ff.innerHTML = '<option value="">— كل مساقاتي —</option>' + opts;
+        }
+
+        // مسؤول السنة: خانة سنة الإعلان مقفولة على سنته (والسيرفر بيفرضها كمان)
+        function lockAnnouncementYear() {
+            const sel = document.getElementById('nYear');
+            const sc = PTCAuth.scopeYear;
+            if (!sel || !sc) return;
+            sel.innerHTML = '<option value="' + sc + '">' + yearLabel(sc) + ' فقط</option>';
+            sel.value = String(sc);
+            sel.disabled = true;
+        }
+
+        // إظهار خانة النطاق حسب الرتبة المختارة
+        function roleChanged() {
+            const role = document.getElementById('rRole').value;
+            const wrap = document.getElementById('rScopeWrap');
+            const scope = document.getElementById('rScope');
+            const hint = document.getElementById('rScopeHint');
+            if (!wrap) return;
+            if (role === 'student') { wrap.style.display = 'none'; return; }
+            wrap.style.display = '';
+            if (role === 'supervisor') {
+                // المشرف لازم يكون مربوطاً بسنة
+                scope.querySelector('option[value=""]').disabled = true;
+                if (!scope.value) scope.value = '1';
+                hint.textContent = 'المشرف لازم يكون مسؤولاً عن سنة محدّدة.';
+            } else {
+                scope.querySelector('option[value=""]').disabled = false;
+                hint.textContent = 'اتركها "كل السنوات" لأدمن عام، أو اختر سنة ليصير أدمن مسؤولاً عنها وحدها.';
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const results = await Promise.all([
+                    PTCAuth.getStudents().catch(function () { return []; }),
+                    PTCAuth.getAllCourseFiles().catch(function () { return []; })
+                ]);
+                const students = results[0];
+                // مسؤول السنة بيحسب ملفات مساقاته بس
+                const files = (results[1] || []).filter(function (f) { return codeInScope(f.course_code); });
+                const box = document.getElementById('statBoxes');
+                if (box) box.innerHTML =
+                    '<div class="astat-box"><div class="v">' + students.length + '</div><div class="l">طالب مسجّل</div></div>' +
+                    '<div class="astat-box"><div class="v">' + files.length + '</div><div class="l">ملف مضاف</div></div>' +
+                    '<div class="astat-box"><div class="v">' + scopedCourses().length + '</div><div class="l">مساق ضمن صلاحيتك</div></div>';
+            } catch (e) { console.error('[Admin] loadStats:', e.message); }
+        }
+
+        async function addFile() {
+            const rec = {
+                course_code: document.getElementById('fCourse').value,
+                title: document.getElementById('fTitle').value.trim(),
+                url: document.getElementById('fUrl').value.trim(),
+                kind: document.getElementById('fKind').value,
+                size_label: document.getElementById('fSize').value.trim() || null
+            };
+            if (!rec.title || !rec.url) { say('fMsg', 'اكتب العنوان والرابط.', 'err'); return; }
+            try {
+                await PTCAuth.addCourseFile(rec);
+                say('fMsg', 'أُضيف الملف بنجاح', 'ok');
+                document.getElementById('fTitle').value = ''; document.getElementById('fUrl').value = ''; document.getElementById('fSize').value = '';
+                loadFiles(); loadStats();
+            } catch (e) { say('fMsg', 'تعذّر الحفظ: ' + e.message, 'err'); }
+        }
+        async function loadFiles() {
+            const ffEl = document.getElementById('fFilter');
+            const filter = ffEl ? ffEl.value : '';
+            let data = [];
+            const body = document.getElementById('filesBody');
+            try { data = await PTCAuth.getAllCourseFiles(filter); }
+            catch (e) {
+                console.error('[Admin] getAllCourseFiles:', e.status, e.message);
+                if (body) body.innerHTML = '<tr><td colspan="5" style="color:var(--danger,#c0392b)">تعذّر تحميل الملفات: ' + esc(e.message) + '</td></tr>';
+                return;
+            }
+            if (!body) return;
+            // فلترة نطاق: مسؤول السنة ما بيشوف ملفات سنوات تانية
+            data = (data || []).filter(function (f) { return codeInScope(f.course_code); });
+            if (!data.length) { body.innerHTML = '<tr><td colspan="5">لا ملفات بعد.</td></tr>'; return; }
+            body.innerHTML = data.map(function (f) {
+                return '<tr>' +
+                    '<td><code style="font-family:var(--font-mono);font-size:11px">' + esc(f.course_code) + '</code></td>' +
+                    '<td>' + esc(f.title) + '</td>' +
+                    '<td>' + esc((f.kind || '').toUpperCase()) + '</td>' +
+                    '<td><a href="' + safeUrl(f.url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--copper)">فتح ↗</a></td>' +
+                    '<td><button class="abtn danger" onclick="delFile(' + Number(f.id) + ')">حذف</button></td>' +
+                    '</tr>';
+            }).join('');
+        }
+        async function delFile(id) {
+            if (!confirm('حذف هذا الملف؟')) return;
+            try { await PTCAuth.deleteCourseFile(id); loadFiles(); loadStats(); }
+            catch (e) { alert('تعذّر الحذف: ' + e.message); }
+        }
+
+        // ===== الطلاب: منحمّلهم مرة ومنفلتر محلياً =====
+        let STUDENTS = [];          // آخر قائمة جات من السيرفر
+        let SELECTED = new Set();   // الـ Ids المحدّدة (بتضل محفوظة عبر الفلاتر)
+
+        const YR = function (y) {
+            return ({ 1: 'الأولى', 2: 'الثانية', 3: 'الثالثة', 4: 'الرابعة', 5: 'خرّيج' }[y]) || '—';
+        };
+
+        async function loadStudents() {
+            const body = document.getElementById('studentsBody');
+            try {
+                STUDENTS = await PTCAuth.getStudents();
+            } catch (e) {
+                if (body) body.innerHTML = '<tr><td colspan="8">تعذّر التحميل: ' + esc(e.message) + '</td></tr>';
+                return;
+            }
+
+            // أدوات النقل الجماعي للأدمن العام فقط
+            if (PTCAuth.isSuperAdmin()) {
+                document.getElementById('selAllCell').style.display = '';
+                document.getElementById('bulkBar').style.display = '';
+            }
+
+            renderStudents();
+        }
+
+        // الطلاب بعد تطبيق فلتر السنة
+        function filteredStudents() {
+            const f = document.getElementById('stYearFilter').value;
+            if (!f) return STUDENTS;
+            if (f === 'none') return STUDENTS.filter(function (s) { return !s.year; });
+            return STUDENTS.filter(function (s) { return Number(s.year) === Number(f); });
+        }
+
+        function renderStudents() {
+            const body = document.getElementById('studentsBody');
+            if (!body) return;
+
+            const data = filteredStudents();
+            const isSuper = PTCAuth.isSuperAdmin();
+            const cols = isSuper ? 7 : 6;
+
+            if (!data.length) {
+                body.innerHTML = '<tr><td colspan="' + cols + '">ما في طلاب بهذا الفلتر.</td></tr>';
+                syncSelUI();
+                return;
+            }
+
+            const rl = function (r) { return ({ student: 'طالب', supervisor: 'مشرف', admin: 'آدمن' }[r]) || r; };
+
+            // نبيّن نطاق المسؤول جنب رتبته حتى يبان مين مسؤول عن شو
+            const scopeTxt = function (s) {
+                if (s.role === 'student') return '';
+                return s.scope_year ? ' · ' + yearLabel(s.scope_year) : ' · عام';
+            };
+
+            // الأدمن العام بيعدّل السنة من الجدول مباشرة؛ غيره بيشوفها نصاً
+            const yearCell = function (s) {
+                if (!isSuper) return esc(YR(s.year));
+                var opts = ['<option value=""' + (s.year ? '' : ' selected') + '>—</option>'];
+                [1, 2, 3, 4, 5].forEach(function (y) {
+                    opts.push('<option value="' + y + '"' +
+                        (Number(s.year) === y ? ' selected' : '') + '>' + YR(y) + '</option>');
+                });
+                return '<select data-prev="' + escAttr(s.year || '') + '" ' +
+                    'style="padding:5px 8px;font-size:12.5px;border-radius:7px;' +
+                    'border:1px solid var(--line-2);background:var(--paper);color:var(--ink);' +
+                    'font-family:var(--font-ar)" onchange="setStudentYear(\'' +
+                    escAttr(s.id) + '\', this)">' + opts.join('') + '</select>';
+            };
+
+            body.innerHTML = data.map(function (s) {
+                const box = isSuper
+                    ? '<td><input type="checkbox" class="stSel" value="' + escAttr(s.id) + '"' +
+                      (SELECTED.has(s.id) ? ' checked' : '') + ' onclick="toggleOne(this)"></td>'
+                    : '';
+                return '<tr>' + box +
+                    '<td>' + esc(s.full_name || '—') + '</td>' +
+                    '<td dir="ltr">' + esc(s.student_id || '—') + '</td>' +
+                    '<td dir="ltr" style="font-size:12px">' + esc(s.email || '—') + '</td>' +
+                    '<td>' + yearCell(s) + '</td>' +
+                    '<td><span class="role-badge role-' + escAttr(s.role) + '">' + esc(rl(s.role) + scopeTxt(s)) + '</span></td>' +
+                    '<td style="font-family:var(--font-mono);font-size:11px">' +
+                        (s.created_at ? new Date(s.created_at).toLocaleDateString('ar-EG-u-nu-latn') : '—') + '</td>' +
+                    '<td><button class="abtn ghost" style="font-size:11px;padding:5px 10px" ' +
+                        'onclick="resetPw(\'' + escAttr(s.id) + '\',\'' + escAttr(s.full_name || '') + '\')">' +
+                        '🔑 تصفير</button></td>' +
+                    '</tr>';
+            }).join('');
+
+            syncSelUI();
+        }
+
+        // ===== التحديد =====
+        function toggleOne(cb) {
+            cb.checked ? SELECTED.add(cb.value) : SELECTED.delete(cb.value);
+            syncSelUI();
+        }
+
+        function toggleAll(cb) {
+            // "حدّد الكل" بتشتغل على المعروض حالياً بس — مش على كل الطلاب
+            filteredStudents().forEach(function (s) {
+                cb.checked ? SELECTED.add(s.id) : SELECTED.delete(s.id);
+            });
+            renderStudents();
+        }
+
+        function clearSel() { SELECTED.clear(); renderStudents(); }
+
+        function syncSelUI() {
+            const c = document.getElementById('selCount');
+            if (c) c.textContent = SELECTED.size;
+
+            const all = document.getElementById('selAll');
+            if (all) {
+                const shown = filteredStudents();
+                all.checked = shown.length > 0 && shown.every(function (s) { return SELECTED.has(s.id); });
+            }
+        }
+
+        // ===== النقل الجماعي =====
+        async function bulkMove() {
+            const ids = [...SELECTED];
+            const year = document.getElementById('bulkYear').value;
+
+            if (!ids.length) { say('bMsg', 'ما حدّدت ولا طالب.', 'err'); return; }
+
+            if (!confirm('نقل ' + ids.length + ' طالب إلى ' + YR(Number(year)) + '؟')) return;
+
+            try {
+                const r = await PTCAuth.bulkChangeYear(ids, year);
+                say('bMsg', 'تم نقل ' + (r ? r.moved : ids.length) + ' طالب إلى ' + YR(Number(year)), 'ok');
+                SELECTED.clear();
+                await loadStudents();
+                loadStats();
+            } catch (e) { say('bMsg', 'تعذّر النقل: ' + e.message, 'err'); }
+        }
+
+        // حفظ سنة طالب واحد فوراً عند التغيير
+        async function setStudentYear(userId, sel) {
+            const prev = sel.getAttribute('data-prev') || '';
+            try {
+                await PTCAuth.changeStudentYear(userId, sel.value);
+                sel.setAttribute('data-prev', sel.value);
+
+                // نحدّث الكاش المحلي حتى الفلترة تضل مظبوطة بلا إعادة تحميل
+                const rec = STUDENTS.find(function (x) { return x.id === userId; });
+                if (rec) rec.year = sel.value ? Number(sel.value) : null;
+
+                sel.style.borderColor = 'var(--olive)';
+                setTimeout(function () { sel.style.borderColor = 'var(--line-2)'; }, 1200);
+                loadStats();
+            } catch (e) {
+                alert('تعذّر تحديث السنة: ' + e.message);
+                sel.value = prev;   // رجّع القيمة القديمة حتى ما يوهم إنه انحفظ
+            }
+        }
+
+
+        // تنسيق اسم المُرسل: "الاسم | الإيميل" → سطرين
+        function formatSubmitter(raw) {
+            if (!raw) return '\u2014';
+            var parts = raw.split(' | ');
+            var name = esc(parts[0] || '');
+            var email = parts[1] ? esc(parts[1]) : '';
+            if (!email) return name;
+            return name + '<br><span style="font-size:11px;color:var(--muted)" dir="ltr">' + email + '</span>';
+        }
+
+        // ===== طلبات الطلاب =====
+        async function loadReviews() {
+            var body = document.getElementById('reviewsBody');
+            var table = document.getElementById('reviewsTable');
+            var empty = document.getElementById('reviewsEmpty');
+            if (!body) return;
+            try {
+                var data = await PTCAuth.getPendingFiles();
+                if (!data || !data.length) {
+                    if (table) table.style.display = 'none';
+                    if (empty) empty.style.display = '';
+                    return;
+                }
+                if (table) table.style.display = '';
+                if (empty) empty.style.display = 'none';
+                body.innerHTML = data.map(function (f) {
+                    return '<tr>' +
+                        '<td><code style="font-family:var(--font-mono);font-size:11px">' + esc(f.course_code) + '</code></td>' +
+                        '<td>' + esc(f.title) + '</td>' +
+                        '<td><a href="' + safeUrl(f.url) + '" target="_blank" rel="noopener" dir="ltr" ' +
+                            'style="font-size:11px;color:var(--olive);word-break:break-all">' +
+                            esc((f.url || '').substring(0, 50)) + '</a></td>' +
+                        '<td>' + formatSubmitter(f.submitter_name) + '</td>' +
+                        '<td style="font-family:var(--font-mono);font-size:11px">' +
+                            (f.created_at ? new Date(f.created_at).toLocaleDateString('ar-EG-u-nu-latn') : '\u2014') + '</td>' +
+                        '<td style="white-space:nowrap">' +
+                            '<button class="abtn" style="font-size:11px;padding:5px 12px;margin-left:4px" ' +
+                                "onclick=\"doReview(" + f.id + ",'approved')\">\u2714 \u0645\u0648\u0627\u0641\u0642\u0629</button>" +
+                            '<button class="abtn ghost" style="font-size:11px;padding:5px 12px" ' +
+                                "onclick=\"doReview(" + f.id + ",'rejected')\">\u2716 \u0631\u0641\u0636</button>" +
+                        '</td></tr>';
+                }).join('');
+            } catch (e) {
+                body.innerHTML = '<tr><td colspan="6">' + esc(e.message) + '</td></tr>';
+            }
+        }
+
+        async function doReview(id, decision) {
+            var label = decision === 'approved' ? 'موافقة' : 'رفض';
+            if (!confirm(label + ' على هذا الملف؟')) return;
+            try {
+                await PTCAuth.reviewFile(id, decision);
+                loadReviews(); loadFiles(); loadStats();
+            } catch (e) { alert(e.message); }
+        }
+
+        async function addNews() {
+            const title = document.getElementById('nTitle').value.trim();
+            const body = document.getElementById('nBody').value.trim();
+            const year = document.getElementById('nYear').value;
+            if (!title) { say('nMsg', 'اكتب عنوان الإعلان.', 'err'); return; }
+            try {
+                await PTCAuth.addAnnouncement({ title: title, body: body, year: year });
+                say('nMsg', 'نُشر الإعلان', 'ok');
+                document.getElementById('nTitle').value = ''; document.getElementById('nBody').value = ''; document.getElementById('nYear').value = '';
+                loadNews();
+            } catch (e) { say('nMsg', 'تعذّر النشر: ' + e.message, 'err'); }
+        }
+        async function loadNews() {
+            let data = [];
+            const box = document.getElementById('newsList');
+            try { data = await PTCAuth.getAnnouncements(); }
+            catch (e) {
+                console.error('[Admin] getAnnouncements:', e.status, e.message);
+                if (box) box.innerHTML = '<div style="font-family:var(--font-ar);color:var(--danger,#c0392b)">تعذّر تحميل الإعلانات: ' + esc(e.message) + '</div>';
+                return;
+            }
+            if (!box) return;
+            if (!data || !data.length) { box.innerHTML = '<div style="font-family:var(--font-ar);color:var(--faint)">لا إعلانات.</div>'; return; }
+            box.innerHTML = data.map(function (n) {
+                var yr = n.year ? ('<span style="font-family:var(--font-ar);font-size:11px;background:var(--olive);color:#fff;padding:2px 8px;border-radius:6px;margin-inline-start:6px">سنة ' + ['','أولى','ثانية','ثالثة','رابعة'][n.year] + '</span>') : '<span style="font-family:var(--font-ar);font-size:11px;background:var(--muted);color:#fff;padding:2px 8px;border-radius:6px;margin-inline-start:6px">عام</span>';
+                return '<div style="border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px">' +
+                    '<div style="display:flex;justify-content:space-between;gap:10px;align-items:start">' +
+                    '<b style="font-family:var(--font-ar);color:var(--olive)">' + esc(n.title) + '</b>' + yr +
+                    '<button class="abtn danger" onclick="delNews(' + Number(n.id) + ')">حذف</button>' +
+                    '</div>' +
+                    '<div style="font-family:var(--font-ar);font-size:13px;color:var(--muted);margin-top:6px">' + esc(n.body || '') + '</div>' +
+                    '</div>';
+            }).join('');
+        }
+        async function delNews(id) {
+            if (!confirm('حذف الإعلان؟')) return;
+            try { await PTCAuth.deleteAnnouncement(id); loadNews(); } catch (e) { }
+        }
+
+        // تصفير كلمة سر طالب — بيظهر كلمة مؤقتة مرة وحدة
+        async function resetPw(userId, name) {
+            if (!confirm('تصفير كلمة سر ' + name + '؟\nرح تظهر كلمة مؤقتة مرة وحدة.')) return;
+            try {
+                const r = await PTCAuth.adminResetPassword(userId);
+                // عرض الكلمة المؤقتة بنافذة لا تُنسخ بالغلط
+                const pw = r.tempPassword || r.temp_password || '—';
+                const div = document.createElement('div');
+                div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;' +
+                    'display:flex;align-items:center;justify-content:center';
+                div.innerHTML = '<div style="background:var(--card);border-radius:14px;padding:28px;' +
+                    'max-width:400px;width:90%;text-align:center;font-family:var(--font-ar)">' +
+                    '<h3 style="color:var(--olive);margin:0 0 8px">كلمة السر المؤقتة</h3>' +
+                    '<p style="font-size:13px;color:var(--muted)">أعطِها لـ <b>' + esc(name) + '</b></p>' +
+                    '<div dir="ltr" style="font-size:28px;font-weight:bold;letter-spacing:4px;' +
+                    'color:var(--olive);background:var(--paper);padding:14px;border-radius:10px;' +
+                    'margin:16px 0;user-select:all">' + esc(pw) + '</div>' +
+                    '<p style="font-size:12px;color:var(--muted)">مش رح تظهر مرة تانية.</p>' +
+                    '<p style="font-size:12px;color:var(--muted)">الطالب لازم يغيّرها أول دخول.</p>' +
+                    '<button class="abtn" onclick="this.closest(\'div[style*=fixed]\').remove()" ' +
+                    'style="margin-top:12px">تم ✔</button></div>';
+                document.body.appendChild(div);
+            } catch (e) { alert('تعذّر التصفير: ' + e.message); }
+        }
+
+        async function setRole() {
+            const email = document.getElementById('rEmail').value.trim();
+            const role = document.getElementById('rRole').value;
+            const scope = role === 'student' ? '' : document.getElementById('rScope').value;
+            if (!email) { say('rMsg', 'اكتب بريد المستخدم.', 'err'); return; }
+            if (role === 'supervisor' && !scope) { say('rMsg', 'اختار السنة اللي بيشرف عليها.', 'err'); return; }
+            try {
+                await PTCAuth.changeRoleByEmail(email, role, scope);
+                const label = role === 'student' ? 'طالب'
+                    : (role === 'admin' ? 'آدمن' : 'مشرف') + (scope ? ' — ' + yearLabel(scope) : ' عام');
+                say('rMsg', 'تم تحديث الصلاحية: ' + label, 'ok');
+                loadStudents();
+            } catch (e) { say('rMsg', 'تعذّر التعديل: ' + e.message, 'err'); }
+        }
+    </script>
+</body>
+</html>

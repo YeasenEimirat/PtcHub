@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة الطالب الذكية — هندسة أنظمة الحاسوب</title>
+    <meta name="description" content="رحلة الطالب الذكية — لوحة تحكم شخصية لمتابعة تقدّمك في كل مساق، مع المهام وساعات الدراسة والملاحظات والإحصائيات.">
+    <meta name="theme-color" content="#3c4a2f">
+    <link rel="icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="هندسة أنظمة الحاسوب — كلية فلسطين التقنية">
+    <meta property="og:title" content="رحلة الطالب الذكية — هندسة أنظمة الحاسوب">
+    <meta property="og:description" content="رحلة الطالب الذكية — لوحة تحكم شخصية لمتابعة تقدّمك في كل مساق، مع المهام وساعات الدراسة والملاحظات والإحصائيات.">
+    <meta property="og:image" content="https://ptc-cse1.vercel.app/og-image.png">
+    <meta property="og:url" content="https://ptc-cse1.vercel.app/journey.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="رحلة الطالب الذكية — هندسة أنظمة الحاسوب">
+    <meta name="twitter:description" content="رحلة الطالب الذكية — لوحة تحكم شخصية لمتابعة تقدّمك في كل مساق، مع المهام وساعات الدراسة والملاحظات والإحصائيات.">
+    <meta name="twitter:image" content="https://ptc-cse1.vercel.app/og-image.png">
+
+    <script>try { if (localStorage.getItem("ptc_theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) { }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== journey layout ===== */
+        .jr-shell {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            align-items: start
+        }
+
+        @media (max-width:940px) {
+            .jr-shell {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .jr-side {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 96px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto
+        }
+
+        @media (max-width:940px) {
+            .jr-side {
+                position: static;
+                max-height: none
+            }
+        }
+
+        .jr-side h3 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            color: var(--olive);
+            margin-bottom: 12px
+        }
+
+        /* stats strip */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+            gap: 12px;
+            margin-bottom: 22px
+        }
+
+        .stat-box {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden
+        }
+
+            .stat-box .sv {
+                font-family: var(--font-display);
+                font-size: 28px;
+                font-weight: 600;
+                color: var(--copper);
+                line-height: 1
+            }
+
+            .stat-box .sl {
+                font-family: var(--font-ar);
+                font-size: 12.5px;
+                color: var(--muted);
+                margin-top: 4px
+            }
+
+            .stat-box .si {
+                position: absolute;
+                top: 12px;
+                inset-inline-end: 14px;
+                font-size: 20px;
+                opacity: .5
+            }
+
+        /* course tree */
+        .jtree-year {
+            margin-bottom: 6px
+        }
+
+            .jtree-year > button {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                padding: 10px 12px;
+                border-radius: 9px;
+                border: 1px solid var(--line);
+                background: var(--paper);
+                color: var(--olive);
+                font-family: var(--font-ar);
+                font-weight: 700;
+                font-size: 14px;
+                cursor: pointer;
+                transition: .18s
+            }
+
+                .jtree-year > button:hover {
+                    border-color: var(--copper)
+                }
+
+                .jtree-year > button .chev {
+                    color: var(--faint);
+                    transition: .25s;
+                    font-size: 11px
+                }
+
+            .jtree-year.open > button .chev {
+                transform: rotate(180deg);
+                color: var(--copper)
+            }
+
+        .jtree-sem {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+            padding-inline-start: 6px
+        }
+
+        .jtree-year.open .jtree-sem {
+            max-height: 2000px
+        }
+
+        .jtree-sem .jsem-name {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--copper);
+            letter-spacing: 1px;
+            margin: 10px 0 5px;
+            padding-inline-start: 6px
+        }
+
+        .jtree-course {
+            width: 100%;
+            text-align: start;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            color: var(--muted);
+            font-family: var(--font-ar);
+            font-size: 13px;
+            cursor: pointer;
+            transition: .15s
+        }
+
+            .jtree-course:hover {
+                background: var(--paper-2);
+                color: var(--ink)
+            }
+
+            .jtree-course.active {
+                background: rgba(176,106,53,.12);
+                color: var(--copper);
+                font-weight: 700
+            }
+
+            .jtree-course .st-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--line-2);
+                flex-shrink: 0
+            }
+
+                .jtree-course .st-dot.doing {
+                    background: var(--gold)
+                }
+
+                .jtree-course .st-dot.done {
+                    background: var(--olive-2)
+                }
+
+        /* main */
+        .jr-empty {
+            display: grid;
+            place-items: center;
+            min-height: 420px;
+            text-align: center;
+            color: var(--faint);
+            font-family: var(--font-ar)
+        }
+
+            .jr-empty .big {
+                font-size: 52px;
+                margin-bottom: 14px;
+                opacity: .6
+            }
+
+        .course-hero {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 18px
+        }
+
+            .course-hero .ct {
+                font-family: var(--font-display);
+                font-size: 24px;
+                color: var(--olive);
+                font-weight: 600
+            }
+
+                .course-hero .ct code {
+                    font-family: var(--font-mono);
+                    font-size: 12px;
+                    color: var(--paper);
+                    background: var(--copper);
+                    border-radius: 6px;
+                    padding: 4px 9px;
+                    margin-inline-end: 8px
+                }
+
+            .course-hero .csub {
+                font-family: var(--font-ar);
+                font-size: 13px;
+                color: var(--muted);
+                margin-top: 4px
+            }
+
+        /* status pills */
+        .status-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px
+        }
+
+        .status-pill {
+            padding: 9px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--line-2);
+            background: var(--card);
+            color: var(--muted);
+            font-family: var(--font-ar);
+            font-weight: 700;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+            .status-pill:hover {
+                border-color: var(--copper)
+            }
+
+            .status-pill.active[data-s="none"] {
+                background: var(--faint);
+                color: #fff;
+                border-color: var(--faint)
+            }
+
+            .status-pill.active[data-s="doing"] {
+                background: var(--gold);
+                color: #3a2e10;
+                border-color: var(--gold)
+            }
+
+            .status-pill.active[data-s="done"] {
+                background: var(--olive-2);
+                color: #fff;
+                border-color: var(--olive-2)
+            }
+
+        /* progress bar */
+        .prog-wrap {
+            margin: 16px 0
+        }
+
+        .prog-label {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-ar);
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+            .prog-label b {
+                color: var(--olive)
+            }
+
+        .prog-track {
+            height: 12px;
+            border-radius: 999px;
+            background: var(--paper-2);
+            border: 1px solid var(--line);
+            overflow: hidden
+        }
+
+        .prog-fill {
+            height: 100%;
+            background: linear-gradient(90deg,var(--olive-2),var(--copper));
+            border-radius: 999px;
+            width: 0;
+            transition: width .5s cubic-bezier(.2,.8,.3,1)
+        }
+
+        /* dashboard grid */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 18px
+        }
+
+        @media (max-width:760px) {
+            .dash-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .dash-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow)
+        }
+
+            .dash-card h4 {
+                font-family: var(--font-display);
+                font-size: 16px;
+                color: var(--olive);
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 8px
+            }
+
+        /* checklist */
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border-radius: 8px;
+            transition: .15s;
+            cursor: pointer
+        }
+
+            .check-item:hover {
+                background: var(--paper-2)
+            }
+
+            .check-item .cb {
+                width: 20px;
+                height: 20px;
+                border-radius: 6px;
+                border: 2px solid var(--line-2);
+                flex-shrink: 0;
+                display: grid;
+                place-items: center;
+                transition: .15s;
+                color: #fff;
+                font-size: 12px
+            }
+
+            .check-item.done .cb {
+                background: var(--olive-2);
+                border-color: var(--olive-2)
+            }
+
+            .check-item .cl {
+                font-family: var(--font-ar);
+                font-size: 14px;
+                color: var(--ink)
+            }
+
+            .check-item.done .cl {
+                text-decoration: line-through;
+                color: var(--faint)
+            }
+
+        /* study hours */
+        .hours-display {
+            text-align: center;
+            padding: 8px 0
+        }
+
+            .hours-display .hv {
+                font-family: var(--font-mono);
+                font-size: 38px;
+                font-weight: 600;
+                color: var(--copper)
+            }
+
+            .hours-display .hl {
+                font-family: var(--font-ar);
+                font-size: 12px;
+                color: var(--muted)
+            }
+
+        .hours-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+            flex-wrap: wrap
+        }
+
+        .hbtn {
+            padding: 8px 14px;
+            border-radius: 9px;
+            border: 1px solid var(--line-2);
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-ar);
+            font-size: 13px;
+            cursor: pointer;
+            transition: .18s
+        }
+
+            .hbtn:hover {
+                border-color: var(--copper)
+            }
+
+            .hbtn.timer {
+                background: var(--olive);
+                color: var(--paper);
+                border-color: var(--olive)
+            }
+
+        /* todo */
+        .todo-add {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px
+        }
+
+        .todo-in {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 9px;
+            border: 1px solid var(--line-2);
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-ar);
+            font-size: 14px;
+            outline: none
+        }
+
+            .todo-in:focus {
+                border-color: var(--copper)
+            }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            transition: .15s
+        }
+
+            .todo-item:hover {
+                background: var(--paper-2)
+            }
+
+            .todo-item .tc {
+                width: 18px;
+                height: 18px;
+                border-radius: 5px;
+                border: 2px solid var(--line-2);
+                cursor: pointer;
+                flex-shrink: 0;
+                display: grid;
+                place-items: center;
+                color: #fff;
+                font-size: 11px
+            }
+
+            .todo-item.done .tc {
+                background: var(--olive-2);
+                border-color: var(--olive-2)
+            }
+
+            .todo-item .tt {
+                flex: 1;
+                font-family: var(--font-ar);
+                font-size: 13.5px;
+                color: var(--ink)
+            }
+
+            .todo-item.done .tt {
+                text-decoration: line-through;
+                color: var(--faint)
+            }
+
+            .todo-item .td {
+                background: none;
+                border: none;
+                color: var(--faint);
+                cursor: pointer;
+                font-size: 15px
+            }
+
+                .todo-item .td:hover {
+                    color: #c0392b
+                }
+
+        /* pomodoro */
+        .pomo {
+            text-align: center
+        }
+
+            .pomo .pt {
+                font-family: var(--font-mono);
+                font-size: 44px;
+                font-weight: 600;
+                color: var(--copper);
+                letter-spacing: 2px
+            }
+
+        .pomo-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+            flex-wrap: wrap
+        }
+
+        /* review guide */
+        .rev-list {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+            .rev-list li {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 11px;
+                border-radius: 8px;
+                background: var(--paper);
+                border: 1px solid var(--line);
+                font-family: var(--font-body);
+                font-size: 13.5px;
+                color: var(--ink)
+            }
+
+                .rev-list li .rn {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 6px;
+                    display: grid;
+                    place-items: center;
+                    background: rgba(60,74,47,.1);
+                    color: var(--olive);
+                    font-family: var(--font-mono);
+                    font-size: 10px;
+                    font-weight: 700;
+                    flex-shrink: 0
+                }
+
+        .rev-sec {
+            font-family: var(--font-ar);
+            font-weight: 700;
+            color: var(--copper);
+            font-size: 13px;
+            margin: 14px 0 6px
+        }
+
+        /* notes (rich) */
+        .notes-toolbar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .nbtn {
+            padding: 7px 11px;
+            border-radius: 8px;
+            border: 1px solid var(--line-2);
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-ar);
+            font-size: 13px;
+            cursor: pointer;
+            transition: .15s;
+            min-width: 34px
+        }
+
+            .nbtn:hover {
+                border-color: var(--copper)
+            }
+
+            .nbtn.on {
+                background: var(--olive);
+                color: var(--paper);
+                border-color: var(--olive)
+            }
+
+        .notes-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            align-items: center
+        }
+
+            .notes-controls select, .notes-search {
+                padding: 9px 11px;
+                border-radius: 9px;
+                border: 1px solid var(--line-2);
+                background: var(--paper);
+                color: var(--ink);
+                font-family: var(--font-ar);
+                font-size: 13px;
+                outline: none
+            }
+
+        .notes-search {
+            flex: 1;
+            min-width: 140px
+        }
+
+        .note-editor {
+            min-height: 180px;
+            padding: 16px;
+            border-radius: 12px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            color: var(--ink);
+            font-family: var(--font-ar);
+            font-size: 15px;
+            line-height: 1.9;
+            outline: none;
+            overflow-y: auto
+        }
+
+            .note-editor:focus {
+                border-color: var(--copper)
+            }
+
+            .note-editor:empty:before {
+                content: attr(data-ph);
+                color: var(--faint)
+            }
+
+            .note-editor h1, .note-editor h2 {
+                font-family: var(--font-display);
+                color: var(--olive)
+            }
+
+            .note-editor mark {
+                background: var(--gold);
+                color: #3a2e10;
+                padding: 1px 3px;
+                border-radius: 3px
+            }
+
+            .note-editor img {
+                max-width: 100%;
+                border-radius: 8px;
+                margin: 8px 0
+            }
+
+        .note-save-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-family: var(--font-ar);
+            font-size: 12.5px;
+            color: var(--muted)
+        }
+
+        .nsave-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--olive-2)
+        }
+
+            .nsave-dot.saving {
+                background: var(--copper)
+            }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px
+        }
+
+        .note-card {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 16px;
+            transition: .18s;
+            position: relative
+        }
+
+            .note-card:hover {
+                border-color: var(--line-2)
+            }
+
+            .note-card.pinned {
+                border-inline-start: 3px solid var(--copper)
+            }
+
+            .note-card .nc-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 8px
+            }
+
+            .note-card .nc-cat {
+                font-family: var(--font-mono);
+                font-size: 10px;
+                padding: 3px 8px;
+                border-radius: 6px;
+                background: rgba(60,74,47,.1);
+                color: var(--olive)
+            }
+
+            .note-card .nc-actions {
+                display: flex;
+                gap: 4px
+            }
+
+                .note-card .nc-actions button {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 15px;
+                    opacity: .6;
+                    transition: .15s;
+                    padding: 2px
+                }
+
+                    .note-card .nc-actions button:hover {
+                        opacity: 1
+                    }
+
+            .note-card .nc-body {
+                font-family: var(--font-ar);
+                font-size: 14px;
+                color: var(--ink);
+                line-height: 1.8
+            }
+
+            .note-card .nc-date {
+                font-family: var(--font-mono);
+                font-size: 10px;
+                color: var(--faint);
+                margin-top: 8px
+            }
+
+        .new-note-btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 10px;
+            border: 1px dashed var(--line-2);
+            background: none;
+            color: var(--olive);
+            font-family: var(--font-ar);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: .18s;
+            margin-top: 10px
+        }
+
+            .new-note-btn:hover {
+                border-color: var(--copper);
+                color: var(--copper)
+            }
+
+        /* collapsible section (accordion like study-tools) */
+        .jsection {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            margin-top: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden
+        }
+
+            .jsection > button {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 18px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: var(--olive);
+                font-family: var(--font-display);
+                font-size: 17px;
+                font-weight: 600
+            }
+
+                .jsection > button:hover {
+                    background: var(--paper-2)
+                }
+
+                .jsection > button .chev {
+                    color: var(--faint);
+                    transition: .25s
+                }
+
+            .jsection.open > button .chev {
+                transform: rotate(180deg);
+                color: var(--copper)
+            }
+
+        .jsection-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .35s ease
+        }
+
+        .jsection.open .jsection-body {
+            max-height: 4000px
+        }
+
+        .jsection-inner {
+            padding: 0 18px 18px
+        }
+
+        /* badges */
+        .badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .badge-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            font-family: var(--font-ar);
+            font-size: 13px;
+            color: var(--faint);
+            transition: .2s
+        }
+
+            .badge-chip.earned {
+                background: linear-gradient(135deg,rgba(201,162,75,.15),var(--paper));
+                border-color: var(--gold);
+                color: var(--olive);
+                font-weight: 700
+            }
+
+            .badge-chip .be {
+                font-size: 20px;
+                filter: grayscale(1);
+                opacity: .5
+            }
+
+            .badge-chip.earned .be {
+                filter: none;
+                opacity: 1
+            }
+    </style>
+    <style>
+        /* مؤشّر مزامنة رحلة الطالب مع الحساب */
+        .sync-state {
+            font-family: var(--font-ar);
+            font-size: 12.5px;
+            color: var(--faint);
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--line);
+            background: var(--card);
+        }
+        .sync-state::before {
+            content: '';
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--faint);
+        }
+        .sync-state.ok { color: var(--olive); }
+        .sync-state.ok::before { background: var(--olive); }
+        .sync-state.saving::before { background: var(--copper); animation: syncPulse 1s infinite; }
+        .sync-state.warn { color: var(--copper); }
+        .sync-state.warn::before { background: var(--copper); }
+        @keyframes syncPulse { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">تخطَّ إلى المحتوى الرئيسي</a>
+
+
+    <div class="college-bar">
+        <div class="inner">
+            <span>كلية فلسطين التقنية — هندسة أنظمة الحاسوب</span>
+            <span class="en">Palestine Technical College · Computer Systems Engineering</span>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="brand" aria-label="هندسة أنظمة الحاسوب">
+                <span class="seal"><img src="logo.png" alt="شعار كلية فلسطين التقنية"></span>
+                <span class="txt"><b>هندسة أنظمة الحاسوب</b><small>Computer Systems Eng</small></span>
+            </div>
+            <div class="nav-links" id="menu">
+                <a href="index.html" data-nav="home"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V21h14V9.5" /><path d="M9 21v-6h6v6" /></svg></span>الرئيسية</a>
+                <div class="nav-drop" data-nav="curriculum">
+                    <button class="nav-drop-btn" type="button"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5z" /><path d="M3 13l9 5 9-5" /></svg></span>المناهج الدراسية <svg class="dd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg></button>
+                    <div class="nav-drop-menu">
+                        <div class="dd-year">
+                            <a href="year1.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الأولى</a>
+                            <div class="dd-sems">
+                                <a href="year1.html#sem0">الفصل الأول</a>
+                                <a href="year1.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <div class="dd-year">
+                            <a href="year2.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الثانية</a>
+                            <div class="dd-sems">
+                                <a href="year2.html#sem0">الفصل الأول</a>
+                                <a href="year2.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <div class="dd-year">
+                            <a href="year3.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الثالثة</a>
+                            <div class="dd-sems">
+                                <a href="year3.html#sem0">الفصل الأول</a>
+                                <a href="year3.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <div class="dd-year">
+                            <a href="year4.html" class="dd-year-link"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19.5V5" /></svg></span>السنة الرابعة</a>
+                            <div class="dd-sems">
+                                <a href="year4.html#sem0">الفصل الأول</a>
+                                <a href="year4.html#sem1">الفصل الثاني</a>
+                            </div>
+                        </div>
+                        <a href="electives.html" class="dd-elective"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.5" /></svg></span>المساقات الاختيارية</a>
+                    </div>
+                </div>
+                <a href="study-tools.html" data-nav="rihab" class="active"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 2 3.5 3.2 3.5 5 0 1.4-1.4 2.3-3.5 2.3S8.5 8.4 8.5 7c0-1.8 1.5-3 3.5-5z" /><path d="M4 21v-6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6" /><path d="M4 21h16" /><path d="M9 21v-3a3 3 0 0 1 6 0v3" /></svg></span>رِحاب العِلم</a>
+            </div>
+            <div class="auth-slot" id="authSlot">
+                <a class="auth-link" href="login.html" title="تسجيل الدخول"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a7 7 0 0 1 14 0v1" /></svg></span><span class="auth-label">دخول</span></a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-btn" onclick="toggleTheme()" aria-label="تبديل الوضع" title="نهاري / ليلي">
+                    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+                </button>
+                <button class="burger" onclick="toggleNav()" aria-label="menu"><i data-icon="menu"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-head">
+        <div class="wrap">
+            <div class="crumb"><a href="index.html"><i data-icon="home"></i> الرئيسية</a> / رحلة الطالب الذكية</div>
+            <h1>رحلة الطالب الذكية <span class="em"><i data-icon="graduation"></i></span></h1>
+            <p>هنا تُروى حكايتك مع العلم فصلاً بعد فصل: تُقيّد فيها خطواتك، وتُرتّب مهامّك، وتُدوّن ما استقرّ في ذهنك، فترى أثرك ماثلاً أمامك، وتمضي على بيّنة من أمرك حتى تبلغ ما تصبو إليه.</p>
+        </div>
+    </header>
+
+    <section style="padding-top:14px">
+        <div class="wrap">
+            <div class="back-bar" style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+                <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;border:1px solid var(--line-2);background:var(--card);color:var(--olive);font-family:var(--font-ar);font-size:14px;transition:.2s"><i data-icon="home"></i> الصفحة الرئيسية</a>
+                <a onclick="history.back()" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;border:1px solid var(--line-2);background:var(--card);color:var(--olive);font-family:var(--font-ar);font-size:14px;transition:.2s"><i data-icon="back"></i> الصفحة السابقة</a>
+            </div>
+
+            <!-- حالة المزامنة مع الحساب -->
+            <div id="syncState" class="sync-state">…</div>
+
+            <!-- overall stats -->
+            <div class="stat-grid" id="statGrid"></div>
+
+            <div class="jr-shell">
+                <aside class="jr-side">
+                    <h3><i data-icon="bookOpen"></i> المساقات</h3>
+                    <div id="jtree"></div>
+                </aside>
+
+                <main>
+                    <div id="jrEmpty" class="jr-empty">
+                        <div><div class="big"><i data-icon="target"></i></div><div>اختر مساقاً من القائمة لتبدأ رحلتك فيه</div></div>
+                    </div>
+
+                    <div id="jrContent" style="display:none">
+                        <div class="course-hero">
+                            <div>
+                                <div class="ct"><code id="jCode"></code><span id="jName"></span></div>
+                                <div class="csub" id="jWhere"></div>
+                            </div>
+                        </div>
+
+                        <div class="status-row" id="statusRow">
+                            <button class="status-pill" data-s="none" onclick="setStatus('none')"><i data-icon="circleDot"></i> لم أبدأ</button>
+                            <button class="status-pill" data-s="doing" onclick="setStatus('doing')"><i data-icon="quran"></i> أدرس حالياً</button>
+                            <button class="status-pill" data-s="done" onclick="setStatus('done')"><i data-icon="checkCircle"></i> أنهيت</button>
+                        </div>
+
+                        <div class="prog-wrap">
+                            <div class="prog-label"><span>نسبة الإنجاز</span><b id="progPct">0%</b></div>
+                            <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+                        </div>
+
+                        <div class="dash-grid">
+                            <!-- checklist -->
+                            <div class="dash-card">
+                                <h4><i data-icon="file"></i> متابعة المحتوى</h4>
+                                <div id="checklist"></div>
+                            </div>
+                            <!-- study hours + pomodoro -->
+                            <div class="dash-card">
+                                <h4><i data-icon="timer"></i> ساعات الدراسة</h4>
+                                <div class="hours-display"><div class="hv" id="hoursVal">0.0</div><div class="hl">ساعة لهذا المساق</div></div>
+                                <div class="hours-btns">
+                                    <button class="hbtn" onclick="addHours(0.5)">+ نصف ساعة</button>
+                                    <button class="hbtn" onclick="addHours(1)">+ ساعة</button>
+                                    <button class="hbtn" onclick="addHours(-0.5)">−</button>
+                                </div>
+                                <div class="pomo" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
+                                    <div class="pt" id="pomoTime">25:00</div>
+                                    <div class="pomo-btns">
+                                        <button class="hbtn timer" onclick="pomoStart()"><i data-icon="play"></i> ابدأ</button>
+                                        <button class="hbtn" onclick="pomoPause()"><i data-icon="pause"></i></button>
+                                        <button class="hbtn" onclick="pomoReset()"><i data-icon="refresh"></i></button>
+                                    </div>
+                                    <div style="font-family:var(--font-ar);font-size:11px;color:var(--faint);margin-top:8px">جلسة تركيز ٢٥ دقيقة تُضاف للساعات تلقائياً</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- todo -->
+                        <div class="jsection open">
+                            <button onclick="toggleSec(this)"><i data-icon="target"></i> مهام هذا المساق <span class="chev">▾</span></button>
+                            <div class="jsection-body">
+                                <div class="jsection-inner">
+                                    <div class="todo-add">
+                                        <input class="todo-in" id="todoIn" placeholder="أضف مهمة... (مثل: حل الواجب الأول)" onkeydown="if(event.key==='Enter')addTodo()">
+                                        <button class="hbtn timer" onclick="addTodo()">+ إضافة</button>
+                                    </div>
+                                    <div id="todoList"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- review guide -->
+                        <div class="jsection">
+                            <button onclick="toggleSec(this)"><i data-icon="clipboard"></i> ماذا أراجع قبل المادة؟ <span class="chev">▾</span></button>
+                            <div class="jsection-body"><div class="jsection-inner" id="reviewGuide"></div></div>
+                        </div>
+
+                        <!-- personal notes -->
+                        <div class="jsection">
+                            <button onclick="toggleSec(this)"><i data-icon="notes"></i> مساحتي الخاصة — الملاحظات <span class="chev">▾</span></button>
+                            <div class="jsection-body">
+                                <div class="jsection-inner">
+                                    <div class="notes-controls">
+                                        <select id="noteCat">
+                                            <option value="تعريف"><i data-icon="pin"></i> تعريف</option>
+                                            <option value="فكرة"><i data-icon="info"></i> فكرة مهمة</option>
+                                            <option value="سؤال"><i data-icon="info"></i> سؤال</option>
+                                            <option value="تذكير"><i data-icon="pin"></i> تذكير</option>
+                                        </select>
+                                        <input class="notes-search" id="noteSearch" placeholder="ابحث في ملاحظات هذا المساق..." oninput="renderNotes()">
+                                    </div>
+                                    <div class="notes-toolbar">
+                                        <button class="nbtn" onmousedown="event.preventDefault()" onclick="fmt('bold')"><b>B</b></button>
+                                        <button class="nbtn" onmousedown="event.preventDefault()" onclick="fmt('italic')"><i>I</i></button>
+                                        <button class="nbtn" onmousedown="event.preventDefault()" onclick="fmt('underline')"><u>U</u></button>
+                                        <button class="nbtn" onmousedown="event.preventDefault()" onclick="fmtBlock('h2')">عنوان</button>
+                                        <button class="nbtn" onmousedown="event.preventDefault()" onclick="fmt('insertUnorderedList')">• قائمة</button>
+                                        <button class="nbtn" onmousedown="event.preventDefault()" onclick="hl()"><i data-icon="edit"></i> تمييز</button>
+                                        <button class="nbtn" onclick="pickImg()"><i data-icon="file"></i> صورة</button>
+                                        <input type="file" id="imgIn" accept="image/*" style="display:none" onchange="insertImg(this)">
+                                    </div>
+                                    <div class="note-editor" id="noteEditor" contenteditable="true" data-ph="اكتب ملاحظتك هنا..."></div>
+                                    <div class="note-save-row"><span class="nsave-dot" id="nsaveDot"></span><span id="nsaveMsg">جاهز</span></div>
+                                    <button class="new-note-btn" onclick="saveNote()"><i data-icon="download"></i> حفظ الملاحظة</button>
+
+                                    <div style="display:flex;gap:8px;margin-top:14px">
+                                        <button class="hbtn" onclick="exportNotesPDF()"><i data-icon="file"></i> تصدير PDF / طباعة</button>
+                                    </div>
+                                    <div class="notes-list" id="notesList"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- badges -->
+                        <div class="jsection">
+                            <button onclick="toggleSec(this)"><i data-icon="trophy"></i> شارات الإنجاز <span class="chev">▾</span></button>
+                            <div class="jsection-body"><div class="jsection-inner"><div class="badges" id="badges"></div></div></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrap foot-inner">
+            <div class="foot-col foot-college"><b>كلية فلسطين التقنية</b> — هندسة أنظمة الحاسوب</div>
+            <div class="foot-col foot-quote">مِنْ طَلَبَةِ الكُلِّيَّةِ لِطَلَبَتِهَا</div>
+            <div class="foot-col foot-by">تصميم وتطوير: <i data-icon="user"></i> م. خالد عبد الكريم هنية &nbsp;•&nbsp; <i data-icon="user"></i> م. إسراء يوسف الشنتف &nbsp;•&nbsp; م. ياسين هاني اعميرات <a href="https://www.linkedin.com/in/yasen-hani-50021b389" target="_blank" rel="noopener" style="color:var(--copper);text-decoration:none;vertical-align:middle" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:2px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a> (تطوير الموقع باكند وفرنت إند)</div>
+        </div>
+    </footer>
+
+    <script src="courses-index.js"></script>
+    <script src="prep-guide.js"></script>
+    <script src="api-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="icons.js"></script>
+    <script src="app.js"></script>
+    <script>
+        const YEAR_ORDER = ["السنة الأولى", "السنة الثانية", "السنة الثالثة", "السنة الرابعة"];
+        let cur = null;
+
+        // ---- storage helpers ----
+        // localStorage بيضلّ الكاش السريع (كل الكود تحت متزامن)،
+        // والـ API هو المصدر الدائم. المزامنة بتصير بالخلفية.
+        function J(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+        function S(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+        function cData(code) { return J('jr_' + code, { status: 'none', checks: { lec: false, summ: false, exams: false }, hours: 0, todos: [], notes: [] }); }
+
+        function cSave(code, d) {
+            S('jr_' + code, d);     // فوري ومحلي
+            pushToCloud(code, d);   // مؤجّل وللسحابة
+        }
+
+        // ============================================================
+        //  المزامنة مع الباكند
+        //  قبل هيك كانت رحلة الطالب localStorage فقط — يعني بتضيع
+        //  لو فتح الموقع من جهاز ثاني أو مسح المتصفّح.
+        // ============================================================
+        const pendingPush = {};      // code -> timer
+        let cloudReady = false;
+
+        function loggedIn() {
+            return typeof PTCAuth !== 'undefined' && PTCAuth.user;
+        }
+
+        function setSyncState(text, cls) {
+            const el = document.getElementById('syncState');
+            if (!el) return;
+            el.textContent = text;
+            el.className = 'sync-state ' + (cls || '');
+        }
+
+        // حفظ مؤجّل (debounce 800ms) — حتى ما نرسل طلب مع كل ضغطة
+        function pushToCloud(code, data) {
+            if (!loggedIn()) return;
+
+            clearTimeout(pendingPush[code]);
+            setSyncState('جارٍ الحفظ…', 'saving');
+
+            pendingPush[code] = setTimeout(async function () {
+                try {
+                    await PTCAuth.saveProgress(code, data);
+                    setSyncState('محفوظ في حسابك', 'ok');
+                } catch (e) {
+                    console.warn('[Journey] تعذّر حفظ التقدّم:', e.message);
+                    setSyncState('محفوظ محلياً فقط', 'warn');
+                }
+            }, 800);
+        }
+
+        // سحب كل التقدّم من الحساب عند فتح الصفحة
+        async function pullFromCloud() {
+            if (!loggedIn()) {
+                setSyncState('غير مسجّل — الحفظ محلي فقط', 'warn');
+                return;
+            }
+
+            setSyncState('جارٍ المزامنة…', 'saving');
+
+            try {
+                const all = await PTCAuth.getAllProgress();
+
+                Object.keys(all || {}).forEach(function (code) {
+                    if (all[code]) S('jr_' + code, all[code]);
+                });
+
+                cloudReady = true;
+                setSyncState('محفوظ في حسابك', 'ok');
+
+                // إعادة رسم بعد ما وصلت البيانات
+                buildTree();
+                renderStats();
+                if (cur) { renderCourse(); renderNotes(); renderBadges(); }
+                if (window.renderIcons) window.renderIcons();
+            } catch (e) {
+                console.warn('[Journey] تعذّر جلب التقدّم:', e.message);
+                setSyncState('تعذّرت المزامنة — الحفظ محلي', 'warn');
+            }
+        }
+
+        // ---- build tree ----
+        function buildTree() {
+            const t = document.getElementById('jtree');
+            const byY = {}; COURSE_INDEX.forEach(c => { (byY[c.year] = byY[c.year] || []).push(c); });
+            t.innerHTML = YEAR_ORDER.filter(y => byY[y]).map((y, yi) => {
+                const bySem = {}; byY[y].forEach(c => { (bySem[c.sname] = bySem[c.sname] || []).push(c); });
+                const sems = Object.keys(bySem).map(sn => `<div class="jsem-name">${sn}</div>` +
+                    bySem[sn].map(c => { const d = cData(c.code); return `<button class="jtree-course" data-code="${c.code}" onclick='openC(${JSON.stringify(c).replace(/'/g, "&#39;")})'><span class="st-dot ${d.status}"></span><span>${c.ar}</span></button>`; }).join('')
+                ).join('');
+                return `<div class="jtree-year"><button onclick="this.parentElement.classList.toggle('open')">${y} <span class="chev">▼</span></button><div class="jtree-sem">${sems}</div></div>`;
+            }).join('');
+        }
+
+        // ---- overall stats ----
+        function renderStats() {
+            let totalH = 0, done = 0, doing = 0, started = 0, pctSum = 0, n = 0, topCode = null, topH = -1;
+            COURSE_INDEX.forEach(c => {
+                const raw = localStorage.getItem('jr_' + c.code); if (!raw) return;
+                const d = cData(c.code); n++;
+                totalH += d.hours || 0;
+                if (d.status === 'done') done++; if (d.status === 'doing') doing++;
+                if (d.status !== 'none') started++;
+                pctSum += coursePct(d);
+                if ((d.hours || 0) > topH) { topH = d.hours || 0; topCode = c.code; }
+            });
+            const total = COURSE_INDEX.length;
+            const overall = total ? Math.round(pctSum / total) : 0;
+            const topC = topCode ? COURSE_INDEX.find(x => x.code === topCode) : null;
+            const boxes = [
+                { i: '<i data-icon="timer"></i>', v: totalH.toFixed(1), l: 'إجمالي ساعات الدراسة' },
+                { i: '<i data-icon="checkCircle"></i>', v: done, l: 'مساقات أنهيتها' },
+                { i: '<i data-icon="quran"></i>', v: doing, l: 'مساقات قيد الدراسة' },
+                { i: '<i data-icon="chart"></i>', v: overall + '%', l: 'الإنجاز العام' },
+                { i: '<i data-icon="flame"></i>', v: topC ? topC.ar : '—', l: 'أكثر مادة درستها' },
+            ];
+            document.getElementById('statGrid').innerHTML = boxes.map(b => `<div class="stat-box"><span class="si">${b.i}</span><div class="sv" style="font-size:${String(b.v).length > 6 ? '18px' : '28px'}">${b.v}</div><div class="sl">${b.l}</div></div>`).join('');
+        }
+        function coursePct(d) {
+            let p = 0;
+            const checks = Object.values(d.checks || {}); const cdone = checks.filter(Boolean).length;
+            p += (cdone / 3) * 50;                 // content = 50%
+            if (d.status === 'done') p += 30; else if (d.status === 'doing') p += 15; // status
+            const td = d.todos || []; if (td.length) { const done = td.filter(t => t.done).length; p += (done / td.length) * 20; } else p += 0;
+            return Math.min(100, Math.round(p));
+        }
+
+        // ---- open course ----
+        function openC(c) {
+            cur = c;
+            document.getElementById('jrEmpty').style.display = 'none';
+            document.getElementById('jrContent').style.display = 'block';
+            document.getElementById('jCode').textContent = c.code;
+            document.getElementById('jName').textContent = c.en;
+            document.getElementById('jWhere').textContent = `${c.ar} — ${c.year} · ${c.sname}`;
+            document.querySelectorAll('.jtree-course').forEach(b => b.classList.toggle('active', b.dataset.code === c.code));
+            renderCourse();
+            renderReview();
+            renderNotes();
+            renderBadges();
+            editor().innerHTML = '';
+        }
+        function d() { return cData(cur.code); }
+        function save(x) { cSave(cur.code, x); renderStats(); updateTreeDot(); }
+        function updateTreeDot() { const b = document.querySelector(`.jtree-course[data-code="${cur.code}"] .st-dot`); if (b) b.className = 'st-dot ' + d().status; }
+
+        function renderCourse() {
+            const data = d();
+            document.querySelectorAll('.status-pill').forEach(p => p.classList.toggle('active', p.dataset.s === data.status));
+            // checklist
+            const items = [['lec', 'المحاضرات'], ['summ', 'الملخصات'], ['exams', 'الأسئلة السابقة']];
+            document.getElementById('checklist').innerHTML = items.map(([k, l]) =>
+                `<div class="check-item ${data.checks[k] ? 'done' : ''}" onclick="toggleCheck('${k}')"><span class="cb">${data.checks[k] ? '<i data-icon="check"></i>' : ''}</span><span class="cl">${l}</span></div>`
+            ).join('');
+            // hours
+            document.getElementById('hoursVal').textContent = (data.hours || 0).toFixed(1);
+            // todos
+            renderTodos();
+            // progress
+            const pct = coursePct(data);
+            document.getElementById('progPct').textContent = pct + '%';
+            document.getElementById('progFill').style.width = pct + '%';
+        }
+        function setStatus(s) { const x = d(); x.status = s; save(x); renderCourse(); renderBadges(); }
+        function toggleCheck(k) { const x = d(); x.checks[k] = !x.checks[k]; save(x); renderCourse(); renderBadges(); }
+        function addHours(v) { const x = d(); x.hours = Math.max(0, (x.hours || 0) + v); save(x); renderCourse(); renderBadges(); }
+
+        // todos
+        function addTodo() { const inp = document.getElementById('todoIn'); const v = inp.value.trim(); if (!v) return; const x = d(); x.todos.push({ t: v, done: false }); save(x); inp.value = ''; renderCourse(); }
+        function renderTodos() {
+            const x = d(); const list = document.getElementById('todoList');
+            if (!x.todos.length) { list.innerHTML = '<div style="font-family:var(--font-ar);color:var(--faint);font-size:13px;text-align:center;padding:8px">لا مهام بعد</div>'; return; }
+            list.innerHTML = x.todos.map((t, i) => `<div class="todo-item ${t.done ? 'done' : ''}"><span class="tc" onclick="toggleTodo(${i})">${t.done ? '<i data-icon="check"></i>' : ''}</span><span class="tt">${esc(t.t)}</span><button class="td" onclick="delTodo(${i})">×</button></div>`).join('');
+        }
+        function toggleTodo(i) { const x = d(); x.todos[i].done = !x.todos[i].done; save(x); renderCourse(); }
+        function delTodo(i) { const x = d(); x.todos.splice(i, 1); save(x); renderCourse(); }
+
+        // pomodoro (adds 25min = 0.42h when a focus session completes)
+        let pomoT = 25 * 60, pomoTick = null;
+        function pomoRender() { const m = String(Math.floor(pomoT / 60)).padStart(2, '0'); const s = String(pomoT % 60).padStart(2, '0'); document.getElementById('pomoTime').textContent = `${m}:${s}`; }
+        function pomoStart() { if (pomoTick) return; pomoTick = setInterval(() => { if (pomoT > 0) { pomoT--; pomoRender(); } else { pomoPause(); addHours(0.42); pomoT = 25 * 60; pomoRender(); alert('أحسنت! انتهت جلسة التركيز وأُضيفت للساعات '); } }, 1000); }
+        function pomoPause() { clearInterval(pomoTick); pomoTick = null; }
+        function pomoReset() { pomoPause(); pomoT = 25 * 60; pomoRender(); }
+        pomoRender();
+
+        // review guide (enhanced)
+        function renderReview() {
+            const g = document.getElementById('reviewGuide');
+            const p = (typeof PREP_GUIDE !== 'undefined') ? PREP_GUIDE[cur.code] : null;
+            if (!p) { g.innerHTML = '<div style="font-family:var(--font-ar);color:var(--faint);font-size:13.5px;padding:6px">لا توجد خطة مراجعة جاهزة لهذا المساق بعد.</div>'; return; }
+            const topics = p.topics.map((t, i) => { const l = typeof t === 'string' ? t : t.topic; return `<li><span class="rn">${i + 1}</span><span>${l}</span></li>`; }).join('');
+            g.innerHTML = `<div class="rev-sec"><i data-icon="key"></i> المفاهيم الأساسية التي يُنصح بمراجعتها</div><ul class="rev-list">${topics}</ul>
+        <div class="rev-sec"><i data-icon="pin"></i> ترتيب مقترح للدراسة</div>
+        <div style="font-family:var(--font-ar);font-size:13.5px;color:var(--muted);line-height:1.9">ابدأ بالمفاهيم الأساسية أعلاه بالترتيب، ثم انتقل للمحاضرات، وطبّق على الأسئلة السابقة، وأخيراً راجع الملخصات قبل الاختبار.</div>`;
+        }
+
+        // ---- rich notes ----
+        function editor() { return document.getElementById('noteEditor'); }
+        function fmt(c) { document.execCommand(c, false, null); editor().focus(); }
+        function fmtBlock(t) { document.execCommand('formatBlock', false, t); editor().focus(); }
+        function hl() { document.execCommand('hiliteColor', false, '#c9a24b') || document.execCommand('backColor', false, '#c9a24b'); editor().focus(); }
+        function pickImg() { document.getElementById('imgIn').click(); }
+        function insertImg(inp) { const f = inp.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { document.execCommand('insertImage', false, e.target.result); }; r.readAsDataURL(f); inp.value = ''; }
+        let noteEditId = null;
+        function saveNote() {
+            const html = editor().innerHTML.trim();
+            if (!html) { alert('الملاحظة فارغة'); return; }
+            const x = d(); const cat = document.getElementById('noteCat').value; const now = Date.now();
+            if (noteEditId) {
+                const nt = x.notes.find(n => n.id === noteEditId); if (nt) { nt.html = html; nt.cat = cat; nt.mod = now; }
+                noteEditId = null;
+            } else {
+                x.notes.unshift({ id: 'n' + now, html, cat, pinned: false, fav: false, mod: now });
+            }
+            save(x); editor().innerHTML = ''; document.getElementById('nsaveMsg').textContent = 'حُفظت <i data-icon="check"></i>'; renderNotes();
+        }
+        function renderNotes() {
+            const x = d(); const q = (document.getElementById('noteSearch').value || '').trim().toLowerCase();
+            let notes = [...x.notes];
+            if (q) notes = notes.filter(n => n.html.toLowerCase().includes(q) || n.cat.includes(q));
+            notes.sort((a, b) => (b.pinned - a.pinned) || (b.fav - a.fav) || (b.mod - a.mod));
+            const list = document.getElementById('notesList');
+            if (!notes.length) { list.innerHTML = '<div style="font-family:var(--font-ar);color:var(--faint);font-size:13px;text-align:center;padding:10px">' + (q ? 'لا نتائج' : 'لا ملاحظات بعد') + '</div>'; return; }
+            list.innerHTML = notes.map(n => {
+                const dt = new Date(n.mod);
+                let hh = dt.getHours(); const ap = hh < 12 ? 'ص' : 'م'; hh = hh % 12 || 12;
+                const ds = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()} · ${hh}:${String(dt.getMinutes()).padStart(2, '0')} ${ap}`;
+                return `<div class="note-card ${n.pinned ? 'pinned' : ''}">
+          <div class="nc-top"><span class="nc-cat">${catIcon(n.cat)} ${n.cat}</span>
+            <div class="nc-actions">
+              <button onclick="pinNote('${n.id}')" title="تثبيت">${n.pinned ? '<i data-icon="pin"></i>' : '<i data-icon="pin"></i>'}</button>
+              <button onclick="favNote('${n.id}')" title="مفضلة">${n.fav ? '<i data-icon="star"></i>' : '<i data-icon="star"></i>'}</button>
+              <button onclick="editNote('${n.id}')" title="تعديل"><i data-icon="edit"></i></button>
+              <button onclick="delNote('${n.id}')" title="حذف"><i data-icon="trash"></i></button>
+            </div>
+          </div>
+          <div class="nc-body">${n.html}</div>
+          <div class="nc-date">آخر تعديل: ${ds}</div>
+        </div>`;
+            }).join('');
+        }
+        function catIcon(c) { return { 'تعريف': '<i data-icon="pin"></i>', 'فكرة': '<i data-icon="info"></i>', 'سؤال': '<i data-icon="info"></i>', 'تذكير': '<i data-icon="pin"></i>' }[c] || '<i data-icon="notes"></i>'; }
+        function pinNote(id) { const x = d(); const n = x.notes.find(n => n.id === id); if (n) n.pinned = !n.pinned; save(x); renderNotes(); }
+        function favNote(id) { const x = d(); const n = x.notes.find(n => n.id === id); if (n) n.fav = !n.fav; save(x); renderNotes(); }
+        function editNote(id) { const x = d(); const n = x.notes.find(n => n.id === id); if (!n) return; editor().innerHTML = n.html; document.getElementById('noteCat').value = n.cat; noteEditId = id; editor().scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        function delNote(id) { if (!confirm('حذف الملاحظة؟')) return; const x = d(); x.notes = x.notes.filter(n => n.id !== id); save(x); renderNotes(); }
+        function exportNotesPDF() {
+            const x = d(); if (!x.notes.length) { alert('لا ملاحظات للتصدير'); return; }
+            const notes = [...x.notes].sort((a, b) => (b.pinned - a.pinned) || (b.mod - a.mod));
+            const w = window.open('', '_blank');
+            w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>ملاحظات ${cur.code}</title>
+        <style>body{font-family:'Tajawal',sans-serif;padding:30px;line-height:1.9;color:#2a2620}
+        h1{color:#3c4a2f}h2{color:#3c4a2f}mark{background:#c9a24b}
+        .note{border:1px solid #ddd;border-radius:10px;padding:14px 18px;margin:14px 0;page-break-inside:avoid}
+        .cat{font-size:12px;color:#b06a35;font-weight:700}img{max-width:100%}</style></head><body>
+        <h1>ملاحظات مساق: ${cur.en} (${cur.code})</h1><p>${cur.ar} — ${cur.year} · ${cur.sname}</p><hr>`);
+            notes.forEach(n => { w.document.write(`<div class="note"><div class="cat">${catIcon(n.cat)} ${n.cat}</div>${n.html}</div>`); });
+            w.document.write('</body></html>'); w.document.close(); setTimeout(() => w.print(), 400);
+        }
+        // autosave draft while typing
+        let nsaveT = null;
+        document.getElementById('noteEditor').addEventListener('input', () => {
+            const dot = document.getElementById('nsaveDot'), msg = document.getElementById('nsaveMsg');
+            dot.classList.add('saving'); msg.textContent = 'مسودة...';
+            clearTimeout(nsaveT); nsaveT = setTimeout(() => {
+                try { localStorage.setItem('jr_draft_' + cur.code, editor().innerHTML); } catch (e) { }
+                dot.classList.remove('saving'); msg.textContent = 'مسودة محفوظة تلقائياً <i data-icon="check"></i>';
+            }, 600);
+        });
+
+        // badges
+        function renderBadges() {
+            const badges = [
+                { e: '<i data-icon="target"></i>', t: 'أنهيت أول مادة', ok: countStatus('done') >= 1 },
+                { e: '<i data-icon="bookOpen"></i>', t: 'أنهيت ٣ مواد', ok: countStatus('done') >= 3 },
+                { e: '<i data-icon="timer"></i>', t: 'درست ١٠ ساعات', ok: totalHours() >= 10 },
+                { e: '<i data-icon="flame"></i>', t: 'درست ٥٠ ساعة', ok: totalHours() >= 50 },
+                { e: '<i data-icon="checkCircle"></i>', t: 'أكملت محتوى مادة', ok: anyFullContent() },
+                { e: '<i data-icon="notes"></i>', t: 'دوّنت أول ملاحظة', ok: anyNote() },
+            ];
+            document.getElementById('badges').innerHTML = badges.map(b => `<div class="badge-chip ${b.ok ? 'earned' : ''}"><span class="be">${b.e}</span>${b.t}</div>`).join('');
+        }
+        function countStatus(s) { let n = 0; COURSE_INDEX.forEach(c => { if (localStorage.getItem('jr_' + c.code) && cData(c.code).status === s) n++; }); return n; }
+        function totalHours() { let h = 0; COURSE_INDEX.forEach(c => { if (localStorage.getItem('jr_' + c.code)) h += cData(c.code).hours || 0; }); return h; }
+        function anyFullContent() { return COURSE_INDEX.some(c => { if (!localStorage.getItem('jr_' + c.code)) return false; const ch = cData(c.code).checks; return ch.lec && ch.summ && ch.exams; }); }
+        function anyNote() { return COURSE_INDEX.some(c => { if (!localStorage.getItem('jr_' + c.code)) return false; return (cData(c.code).notes || []).length > 0; }); }
+
+        function toggleSec(btn) { btn.parentElement.classList.toggle('open'); }
+
+        buildTree();
+        renderStats();
+
+        // المزامنة: منستنى تجهز الجلسة حتى نعرف إذا الطالب مسجّل دخول
+        if (typeof PTCAuth !== 'undefined') {
+            if (PTCAuth.isReady) pullFromCloud();
+            else window.addEventListener('ptc-auth-change', pullFromCloud, { once: true });
+        }
+    </script>
+</body>
+</html>

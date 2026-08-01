@@ -1,0 +1,8 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=SQLxxxx.smarterasp.net;Database=db_xxxx;User Id=db_xxxx_admin;Password=PUT_PASSWORD_HERE;TrustServerCertificate=True;"
+  },
+  "Jwt": {
+    "Key": "PUT_A_RANDOM_64_CHAR_KEY_HERE_DO_NOT_REUSE_THE_DEV_ONE"
+  }
+}

@@ -1,0 +1,11 @@
+bin/
+obj/
+*.user
+.vs/
+appsettings.Development.json
+**/security-check.html
+security-check.js
+Thumbs.db
+.DS_Store
+*.zip
+*.zip
